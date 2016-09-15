@@ -6,7 +6,7 @@
 
 ### Release versions
 
-[https://github.com/singuerinc/swedish-wotd/releases]()
+[https://github.com/singuerinc/swedish-wotd/releases](https://github.com/singuerinc/swedish-wotd/releases)
 
 ### Dev version
 
