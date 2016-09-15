@@ -15,12 +15,8 @@
     ]
   },
   "permissions": [
-    "http://*/*",
-    "https://*/*",
-    "background",
     "storage",
-    "webRequest",
-    "*://*.google.com/"
+    "webRequest"
   ],
   "options_ui": {
     "page": "options.html",
