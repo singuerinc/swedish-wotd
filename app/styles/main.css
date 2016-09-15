@@ -65,3 +65,21 @@ h2 {
   opacity: 0.4;
   text-transform: capitalize;
 }
+
+.title {
+  font-weight: normal;
+  font-size: 2rem;
+  text-transform: capitalize;
+  position: absolute;
+  top: 2rem;
+  left: 20px;
+}
+
+.new-word {
+  font-weight: normal;
+  font-size: 1.5rem;
+  text-transform: capitalize;
+  position: absolute;
+  bottom: 2rem;
+  right: 20px;
+}

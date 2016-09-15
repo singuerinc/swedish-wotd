@@ -6,14 +6,16 @@
     <link href="styles/main.css" rel="stylesheet">
     <!-- endbuild -->
   </head>
-  <body>
+  <body id="app">
 
-    <div id="app" class="xy-center" v-cloak>
-
+    <div class="xy-center" v-cloak>
       <h1 class="v-cloak--hidden">{{ word.tr }}</h1>
       <h2 class="v-cloak--hidden">{{ word.main }}</h2>
 
     </div>
+
+    <h3 class="title">Swedish Word of the Day</h3>
+    <a class="new-word" v-on:click="newWord()" class="new-word">New word</a>
 
     <!-- build:js scripts/index.js -->
     <script src="scripts/vue.js"></script>

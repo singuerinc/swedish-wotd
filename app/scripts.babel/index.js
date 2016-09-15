@@ -10,6 +10,14 @@ function initApp(today, word, json){
         main: word,
         tr: json.def[0] ? json.def[0].tr[0].text : ''
       }
+    },
+    methods: {
+      newWord: () => {
+        let date = new Date(),
+          today = date.getFullYear() + '' + date.getMonth() + '' + date.getDate();
+        localStorage.removeItem(today);
+        window.location.reload();
+      }
     }
   });
 
