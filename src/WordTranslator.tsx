@@ -93,7 +93,7 @@ function withTranslator(WordComponent) {
         );
       }
 
-      return <WordComponent word={translated} />;
+      return <WordComponent word={{ title: translated }} />;
     }
   };
 }

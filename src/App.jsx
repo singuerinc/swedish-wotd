@@ -1,10 +1,12 @@
 import * as React from "react";
 import axios from "axios";
+import words from "./google-10000-english";
 import { withTranslator } from "./WordTranslator";
 import { Word } from "./Word";
 import { ReloadButton } from "./ReloadButton";
 
 const clean = x => /<strong>:<\/strong>(\D+)<strong>:<\/strong>/.exec(x)[1];
+const randomIn = x => x[Math.floor(Math.random() * x.length)];
 const WordTranslator = withTranslator(Word);
 const SmallWord = ({ word }) => <Word className="small" word={word} />;
 
@@ -17,10 +19,20 @@ class App extends React.Component {
   }
 
   load() {
-    axios.get(`/.netlify/functions/wotd`).then(({ data }) => {
-      this.setState({
-        word: data
-      });
+    // axios.get(`/.netlify/functions/wotd`).then(({ data }) => {
+    //   this.setState({
+    //     word: data
+    //   });
+    // });
+
+    const word = randomIn(words);
+    this.setState({
+      word: {
+        title: word,
+        description: "",
+        link: "",
+        date: ""
+      }
     });
   }
 
