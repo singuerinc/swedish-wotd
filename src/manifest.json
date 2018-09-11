@@ -9,15 +9,9 @@
   },
   "default_locale": "en",
   "background": {
-    "scripts": [
-      "scripts/chromereload.js",
-      "scripts/background.js"
-    ]
+    "scripts": []
   },
-  "permissions": [
-    "storage",
-    "webRequest"
-  ],
+  "permissions": ["storage", "webRequest"],
   "options_ui": {
     "page": "options.html",
     "chrome_style": true
@@ -27,10 +21,9 @@
       "19": "images/icon-19.png",
       "38": "images/icon-38.png"
     },
-    "default_title": "wotd",
-    "default_popup": "popup.html"
+    "default_title": "wotd"
   },
-  "chrome_url_overrides" : {
+  "chrome_url_overrides": {
     "newtab": "index.html"
   }
 }
