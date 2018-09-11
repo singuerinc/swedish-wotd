@@ -1,5 +1,5 @@
 import { h } from "preact";
 
-const Word = ({ word }) => <h1>{word}</h1>;
+const Word = props => <h1 {...props}>{props.word}</h1>;
 
 export { Word };

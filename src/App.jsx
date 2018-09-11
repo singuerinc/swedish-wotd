@@ -18,7 +18,12 @@ class App extends Component {
     const { word } = this.state;
     console.log(word);
     if (word) {
-      return <WordTranslator word={this.state.word} />;
+      return (
+        <div>
+          <WordTranslator word={word} />
+          <Word className="small" word={word} />
+        </div>
+      );
     } else {
       return null;
     }

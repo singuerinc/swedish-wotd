@@ -24,17 +24,39 @@ body {
   height: 100%;
 }
 
-h1,
-h2 {
+h1 {
   margin: 0;
   padding: 0;
 }
 
 h1 {
-  font-size: 8rem;
+  font-size: 3rem;
+  text-align: center;
 }
 
-h2 {
+.small {
   font-size: 2rem;
+  font-style: italic;
+  text-align: center;
   opacity: 0.1;
+}
+
+@media only screen and (min-width: 24rem) {
+  h1 {
+    font-size: 6rem;
+  }
+
+  .small {
+    font-size: 3rem;
+  }
+}
+
+@media only screen and (min-width: 48rem) {
+  h1 {
+    font-size: 8rem;
+  }
+
+  .small {
+    font-size: 3rem;
+  }
 }
