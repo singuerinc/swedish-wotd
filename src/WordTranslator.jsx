@@ -27,7 +27,7 @@ const load = text => {
 
 function withTranslator(WordComponent) {
   return class WordTranslator extends Component {
-    constructor(word) {
+    constructor() {
       super();
       this.state = {
         translated: null
@@ -42,14 +42,14 @@ function withTranslator(WordComponent) {
       });
     }
 
-    componentWillReceiveProps(nextProps) {
-      if (nextProps.word !== this.state.translated) {
-        return {
-          word: nextProps
-        };
+    componentDidUpdate(prevProps) {
+      if (this.props.word !== prevProps.word) {
+        load(this.props.word).then(word => {
+          this.setState({
+            translated: word
+          });
+        });
       }
-
-      return null;
     }
 
     render() {

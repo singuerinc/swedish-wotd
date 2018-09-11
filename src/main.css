@@ -21,6 +21,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   height: 100%;
 }
 
@@ -36,8 +37,17 @@ h1 {
 
 .small {
   font-size: 2rem;
+  font-weight: 300;
   font-style: italic;
   text-align: center;
+  opacity: 0.1;
+}
+
+.reload-btn {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  cursor: pointer;
   opacity: 0.1;
 }
 
