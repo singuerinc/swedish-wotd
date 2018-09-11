@@ -9,6 +9,8 @@ body,
 }
 
 body {
+  padding: 0;
+  margin: 0;
   font-family: "Avenir Next", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -17,56 +19,75 @@ body {
   color: white;
 }
 
-.container {
+.app-container {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   height: 100%;
+  padding: 2rem;
+  text-align: center;
+}
+
+.app-container .icon {
+  height: 4.125rem;
+  width: 100%;
+}
+
+.word-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 h1 {
   margin: 0;
   padding: 0;
-}
-
-h1 {
   font-size: 3rem;
-  text-align: center;
+  height: 4.125rem;
 }
 
 .small {
   font-size: 2rem;
   font-weight: 300;
   font-style: italic;
-  text-align: center;
   opacity: 0.1;
 }
 
 .reload-btn {
-  position: fixed;
-  bottom: 1rem;
-  left: 1rem;
+  position: initial;
   cursor: pointer;
-  opacity: 0.1;
+  flex: 0.1 1 auto;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @media only screen and (min-width: 24rem) {
   h1 {
     font-size: 6rem;
+    height: 8.1875rem;
   }
 
-  .small {
-    font-size: 3rem;
+  .reload-btn {
+    flex: 0 1 auto;
   }
 }
 
 @media only screen and (min-width: 48rem) {
   h1 {
     font-size: 8rem;
+    height: 10.9375rem;
   }
 
   .small {
     font-size: 3rem;
+  }
+
+  .reload-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    flex: auto;
   }
 }
