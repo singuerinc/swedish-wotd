@@ -44,6 +44,9 @@ function withTranslator(WordComponent) {
 
     componentDidUpdate(prevProps) {
       if (this.props.word !== prevProps.word) {
+        this.setState({
+          translated: null
+        });
         load(this.props.word).then(word => {
           this.setState({
             translated: word
