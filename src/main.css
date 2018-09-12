@@ -19,6 +19,14 @@ body {
   color: white;
 }
 
+.loading {
+  position: fixed;
+  opacity: 0.5;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+}
+
 .app-container {
   display: flex;
   justify-content: center;
@@ -30,7 +38,6 @@ body {
 }
 
 .app-container .icon {
-  height: 4.125rem;
   width: 100%;
 }
 
@@ -40,9 +47,11 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  width: 100%;
 }
 
-h1 {
+h1,
+.app-container .icon {
   margin: 0;
   padding: 0;
   font-size: 3rem;
@@ -54,6 +63,7 @@ h1 {
   font-weight: 300;
   font-style: italic;
   opacity: 0.1;
+  width: 100%;
 }
 
 .reload-btn {
@@ -64,7 +74,8 @@ h1 {
 }
 
 @media only screen and (min-width: 24rem) {
-  h1 {
+  h1,
+  .app-container .icon {
     font-size: 6rem;
     height: 8.1875rem;
   }
@@ -75,7 +86,8 @@ h1 {
 }
 
 @media only screen and (min-width: 48rem) {
-  h1 {
+  h1,
+  .app-container .icon {
     font-size: 8rem;
     height: 10.9375rem;
   }
