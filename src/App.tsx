@@ -6,6 +6,7 @@ import { ReloadButton } from "./ReloadButton";
 import { Word } from "./Word";
 import { withTranslator } from "./WordTranslator";
 
+const LOCAL_STORAGE_WORDS = "words";
 const clean = (x: string) =>
   (/<strong>:<\/strong>(\D+)<strong>:<\/strong>/.exec(x) as RegExpExecArray)[1];
 const randomIn = (x: string[]) => x[Math.floor(Math.random() * x.length)];
@@ -14,7 +15,17 @@ const SmallWord = ({ word }: { word: IWord }) => (
   <Word className="small" word={word} />
 );
 
+const shuffle = (arr: string[]) => {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+};
+
 interface IState {
+  words: string[];
   word: IWord | null;
   errorRetry: number;
 }
@@ -22,9 +33,27 @@ interface IState {
 class App extends React.Component<{}, IState> {
   constructor(props: {}) {
     super(props);
+
+    let savedWords: string[];
+
+    try {
+      savedWords = JSON.parse(localStorage.getItem(
+        LOCAL_STORAGE_WORDS
+      ) as string);
+
+      if (savedWords.length <= 0) {
+        // get words from network
+        throw new Error();
+      }
+    } catch (e) {
+      savedWords = shuffle(words);
+      localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(savedWords));
+    }
+
     this.state = {
       errorRetry: 0,
-      word: null
+      word: null,
+      words: savedWords
     };
   }
 
@@ -35,8 +64,14 @@ class App extends React.Component<{}, IState> {
     //   });
     // });
 
-    const word = randomIn(words);
+    // get the fist words
+    const [word, ...rest] = this.state.words;
+    localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(rest));
+
+    console.log("saving to local storage:", rest.length);
+
     this.setState({
+      words: rest,
       word: {
         title: word,
         description: "",
