@@ -15,8 +15,8 @@ body {
     Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #111;
-  color: white;
+  background-color: #212529;
+  color: #f8f9fa;
 }
 
 .app-container {
@@ -53,7 +53,7 @@ h1 {
   font-size: 2rem;
   font-weight: 300;
   font-style: italic;
-  opacity: 0.1;
+  color: #868e96;
 }
 
 .reload-btn {
