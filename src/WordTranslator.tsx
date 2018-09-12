@@ -78,11 +78,17 @@ function withTranslator(WordComponent: React.ComponentClass<{ word: IWord }>) {
     public render() {
       const { translated } = this.state;
       const isLoading = translated === null || translated === "";
+      const word: IWord = {
+        title: translated as string,
+        description: "",
+        link: "",
+        date: ""
+      };
 
       return (
         <>
           {isLoading && <LoadingIcon />}
-          {!isLoading && <WordComponent word={{ title: translated }} />}
+          {!isLoading && <WordComponent word={word} />}
         </>
       );
     }
