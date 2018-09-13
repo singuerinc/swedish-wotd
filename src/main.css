@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  user-select: none;
 }
 
 html,
@@ -85,6 +86,13 @@ h1,
   height: auto;
 }
 
+.words-left {
+  font-weight: 300;
+  opacity: 0.4;
+  bottom: 5rem;
+  position: fixed;
+}
+
 .settings {
   display: flex;
   list-style: none;
@@ -117,5 +125,9 @@ h1,
 
   .settings {
     padding: 2rem;
+  }
+
+  .words-left {
+    font-weight: 500;
   }
 }

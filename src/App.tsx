@@ -4,6 +4,7 @@ import { ReloadButton } from "./ReloadButton";
 import { ThemeButton } from "./ThemeButton";
 import { Word } from "./Word";
 import { words } from "./words";
+import { WordsLeft } from "./WordsLeft";
 
 const LOCAL_STORAGE_WORDS = "words";
 const LOCAL_STORAGE_THEME = "theme";
@@ -71,6 +72,7 @@ class App extends React.Component<{}, IState> {
 
   public load = () => {
     const [word, ...rest] = this.state.words;
+    console.log(rest.length);
     localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(rest));
 
     this.setState({
@@ -85,7 +87,12 @@ class App extends React.Component<{}, IState> {
   }
 
   public render() {
-    const { wordInEnglish, wordInSwedish, theme } = this.state;
+    const {
+      wordInEnglish,
+      wordInSwedish,
+      theme,
+      words: wordsLeft
+    } = this.state;
 
     if (wordInEnglish && wordInSwedish) {
       return (
@@ -93,6 +100,7 @@ class App extends React.Component<{}, IState> {
           <div className="word-container">
             <Word word={wordInSwedish} />
             <SmallWord word={wordInEnglish} />
+            <WordsLeft words={wordsLeft} />
           </div>
           <ul className="settings">
             <li>
