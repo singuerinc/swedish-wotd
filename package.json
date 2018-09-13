@@ -21,9 +21,11 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "date-fns": "^1.29.0",
     "feedparser": "^2.2.9",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "sanitize-html": "^1.19.0"
   }
 }

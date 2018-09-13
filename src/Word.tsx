@@ -6,8 +6,10 @@ interface IProps {
   className?: string;
 }
 
-const Word = ({ className, word }: IProps) => (
-  <h1 className={className}>{word.title}</h1>
-);
+class Word extends React.Component<IProps> {
+  public render() {
+    return <h1 className={this.props.className}>{this.props.word.title}</h1>;
+  }
+}
 
 export { Word };

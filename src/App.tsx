@@ -1,6 +1,7 @@
 import axios from "axios";
+import * as isSameDay from "date-fns/is_same_day";
 import * as React from "react";
-import words from "./google-10000-english";
+import sanitizeHtml from "sanitize-html";
 import { InfoButton } from "./InfoButton";
 import { IWord } from "./IWord";
 import { ReloadButton } from "./ReloadButton";
@@ -8,30 +9,22 @@ import { ThemeButton } from "./ThemeButton";
 import { Word } from "./Word";
 import { withTranslator } from "./WordTranslator";
 
-const LOCAL_STORAGE_WORDS = "words";
-const LOCAL_STORAGE_THEME = "theme";
+const LOCAL_STORAGE = "swotd";
 
 const clean = (x: string) =>
-  (/<strong>:<\/strong>(\D+)<strong>:<\/strong>/.exec(x) as RegExpExecArray)[1];
-const randomIn = (x: string[]) => x[Math.floor(Math.random() * x.length)];
+  (/<strong>Examples:<\/strong>[\s]+<\/p><p>(.*)<\/p>*/gim.exec(
+    x
+  ) as RegExpExecArray)[1];
+
 const WordTranslator = withTranslator(Word);
 const SmallWord = ({ word }: { word: IWord }) => (
   <Word className="small" word={word} />
 );
 
-const shuffle = (arr: string[]) => {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-};
-
 interface IState {
   errorRetry: number;
+  lastUpdate: number;
   theme: number;
-  words: string[];
   word: IWord | null;
 }
 
@@ -39,32 +32,28 @@ class App extends React.Component<{}, IState> {
   constructor(props: {}) {
     super(props);
 
-    let savedWords: string[];
+    let s: IState;
 
     try {
-      savedWords = JSON.parse(localStorage.getItem(
-        LOCAL_STORAGE_WORDS
-      ) as string);
-
-      if (savedWords.length <= 0) {
-        // get words from network
+      s = JSON.parse(localStorage.getItem(LOCAL_STORAGE) as string);
+      if (s === null || s.word === null) {
         throw new Error();
       }
     } catch (e) {
-      savedWords = shuffle(words);
-      localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(savedWords));
+      s = {
+        errorRetry: 0,
+        lastUpdate: new Date().getTime(),
+        theme: 0,
+        word: null
+      };
     }
 
-    const localTheme = localStorage.getItem(LOCAL_STORAGE_THEME);
-    const theme = localTheme ? parseInt(localTheme, 10) : 0;
-
-    localStorage.setItem(LOCAL_STORAGE_THEME, theme.toString());
+    console.log(s);
+    localStorage.setItem(LOCAL_STORAGE, JSON.stringify(s));
 
     this.state = {
-      errorRetry: 0,
-      theme,
-      word: null,
-      words: savedWords
+      ...s,
+      errorRetry: 0
     };
   }
 
@@ -78,45 +67,47 @@ class App extends React.Component<{}, IState> {
         theme: (prevState.theme + 1) % 3
       }),
       () => {
-        localStorage.setItem(LOCAL_STORAGE_THEME, this.state.theme.toString());
+        localStorage.setItem(LOCAL_STORAGE, JSON.stringify(this.state));
       }
     );
   };
 
   public load = () => {
-    // axios.get(`/.netlify/functions/wotd`).then(({ data }) => {
-    //   this.setState({
-    //     word: data
-    //   });
-    // });
+    console.log("hey load");
+    axios.get(`/.netlify/functions/wotd`).then(({ data }: { data: IWord }) => {
+      const word = {
+        ...data,
+        description: clean(
+          sanitizeHtml(data.description, {
+            allowedTags: ["p", "strong"]
+          })
+        )
+      };
 
-    // get the fist words
-    const [word, ...rest] = this.state.words;
-    localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(rest));
+      this.setState({
+        word
+      });
 
-    this.setState({
-      words: rest,
-      word: {
-        title: word,
-        description: "",
-        link: "",
-        date: ""
-      }
+      localStorage.setItem(
+        LOCAL_STORAGE,
+        JSON.stringify({ ...this.state, errorRetry: 0 })
+      );
     });
   };
 
-  public onTranlationError(e: Error) {
-    this.setState(
-      (prevState: IState) => ({
-        errorRetry: prevState.errorRetry + 1
-      }),
-      () => {
-        if (this.state.errorRetry < 5) {
-          this.load();
-        }
-      }
-    );
-  }
+  public onTranlationError(e: Error) {}
+  // public onTranlationError(e: Error) {
+  //   this.setState(
+  //     (prevState: IState) => ({
+  //       errorRetry: prevState.errorRetry + 1
+  //     }),
+  //     () => {
+  //       if (this.state.errorRetry < 5) {
+  //         this.load();
+  //       }
+  //     }
+  //   );
+  // }
 
   public onTranslationSuccess(word: string) {
     this.setState({
@@ -125,13 +116,17 @@ class App extends React.Component<{}, IState> {
   }
 
   public componentDidMount() {
-    this.load();
+    const { word } = this.state;
+    if (word === null) {
+      console.log("load from net");
+      this.load();
+    }
   }
 
   public render() {
     const { word, theme } = this.state;
 
-    // <div dangerouslySetInnerHTML={{ __html: clean(word.description) }} />;
+    //
     // <a href={word.link}>{word.link}</a>
 
     if (word) {
@@ -144,14 +139,20 @@ class App extends React.Component<{}, IState> {
               word={word}
             />
             <SmallWord word={word} />
+            <em
+              className="description"
+              dangerouslySetInnerHTML={{
+                __html: word.description
+              }}
+            />
           </div>
           <ul className="settings">
             <li>
               <InfoButton onClick={this.info} />
             </li>
-            <li>
+            {/* <li>
               <ReloadButton onClick={this.load} />
-            </li>
+            </li> */}
             <li>
               <ThemeButton theme={theme} onClick={this.changeTheme} />
             </li>

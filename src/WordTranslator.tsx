@@ -2,6 +2,7 @@ import * as axios from "axios";
 import * as React from "react";
 import { IWord } from "./IWord";
 import { LoadingIcon } from "./LoadingIcon";
+import { QuestionIcon } from "./QuestionIcon";
 
 const wordOrEmpty = (x: string): string =>
   x.def[0] ? x.def[0].tr[0].text : "";
@@ -76,7 +77,8 @@ function withTranslator(WordComponent: React.ComponentClass<{ word: IWord }>) {
 
     public render() {
       const { translated } = this.state;
-      const isLoading = translated === null || translated === "";
+      const isLoading = translated === null;
+      const isError = translated === "";
       const word: IWord = {
         title: translated as string,
         description: "",
@@ -87,7 +89,8 @@ function withTranslator(WordComponent: React.ComponentClass<{ word: IWord }>) {
       return (
         <>
           {isLoading && <LoadingIcon />}
-          {!isLoading && <WordComponent word={word} />}
+          {isError && <QuestionIcon />}
+          {!isLoading && !isError && <WordComponent word={word} />}
         </>
       );
     }
