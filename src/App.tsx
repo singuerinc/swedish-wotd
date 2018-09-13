@@ -1,45 +1,30 @@
-import axios from "axios";
 import * as React from "react";
-import words from "./google-10000-english";
 import { InfoButton } from "./InfoButton";
-import { IWord } from "./IWord";
 import { ReloadButton } from "./ReloadButton";
 import { ThemeButton } from "./ThemeButton";
 import { Word } from "./Word";
-import { withTranslator } from "./WordTranslator";
+import { words } from "./words";
 
 const LOCAL_STORAGE_WORDS = "words";
 const LOCAL_STORAGE_THEME = "theme";
 
-const clean = (x: string) =>
-  (/<strong>:<\/strong>(\D+)<strong>:<\/strong>/.exec(x) as RegExpExecArray)[1];
-const randomIn = (x: string[]) => x[Math.floor(Math.random() * x.length)];
-const WordTranslator = withTranslator(Word);
-const SmallWord = ({ word }: { word: IWord }) => (
+const SmallWord = ({ word }: { word: string }) => (
   <Word className="small" word={word} />
 );
-
-const shuffle = (arr: string[]) => {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-};
 
 interface IState {
   errorRetry: number;
   theme: number;
-  words: string[];
-  word: IWord | null;
+  words: string[][];
+  wordInEnglish: string | null;
+  wordInSwedish: string | null;
 }
 
 class App extends React.Component<{}, IState> {
   constructor(props: {}) {
     super(props);
 
-    let savedWords: string[];
+    let savedWords: string[][];
 
     try {
       savedWords = JSON.parse(localStorage.getItem(
@@ -51,7 +36,7 @@ class App extends React.Component<{}, IState> {
         throw new Error();
       }
     } catch (e) {
-      savedWords = shuffle(words);
+      savedWords = words;
       localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(savedWords));
     }
 
@@ -63,7 +48,8 @@ class App extends React.Component<{}, IState> {
     this.state = {
       errorRetry: 0,
       theme,
-      word: null,
+      wordInEnglish: null,
+      wordInSwedish: null,
       words: savedWords
     };
   }
@@ -84,66 +70,29 @@ class App extends React.Component<{}, IState> {
   };
 
   public load = () => {
-    // axios.get(`/.netlify/functions/wotd`).then(({ data }) => {
-    //   this.setState({
-    //     word: data
-    //   });
-    // });
-
-    // get the fist words
     const [word, ...rest] = this.state.words;
     localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(rest));
 
     this.setState({
       words: rest,
-      word: {
-        title: word,
-        description: "",
-        link: "",
-        date: ""
-      }
+      wordInEnglish: word[0],
+      wordInSwedish: word[1]
     });
   };
-
-  public onTranlationError(e: Error) {
-    this.setState(
-      (prevState: IState) => ({
-        errorRetry: prevState.errorRetry + 1
-      }),
-      () => {
-        if (this.state.errorRetry < 5) {
-          this.load();
-        }
-      }
-    );
-  }
-
-  public onTranslationSuccess(word: string) {
-    this.setState({
-      errorRetry: 0
-    });
-  }
 
   public componentDidMount() {
     this.load();
   }
 
   public render() {
-    const { word, theme } = this.state;
+    const { wordInEnglish, wordInSwedish, theme } = this.state;
 
-    // <div dangerouslySetInnerHTML={{ __html: clean(word.description) }} />;
-    // <a href={word.link}>{word.link}</a>
-
-    if (word) {
+    if (wordInEnglish && wordInSwedish) {
       return (
         <div className={`app-container theme-${theme}`}>
           <div className="word-container">
-            <WordTranslator
-              onError={(e: Error) => this.onTranlationError(e)}
-              onSuccess={(word: string) => this.onTranslationSuccess(word)}
-              word={word}
-            />
-            <SmallWord word={word} />
+            <Word word={wordInSwedish} />
+            <SmallWord word={wordInEnglish} />
           </div>
           <ul className="settings">
             <li>

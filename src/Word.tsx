@@ -1,13 +1,12 @@
 import * as React from "react";
-import { IWord } from "./IWord";
 
 interface IProps {
-  word: IWord;
+  word: string;
   className?: string;
 }
 
 const Word = ({ className, word }: IProps) => (
-  <h1 className={className}>{word.title}</h1>
+  <h1 className={className}>{word}</h1>
 );
 
 export { Word };
