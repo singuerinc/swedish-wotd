@@ -3,7 +3,7 @@ import { InfoButton } from "./InfoButton";
 import { ReloadButton } from "./ReloadButton";
 import { ThemeButton } from "./ThemeButton";
 import { Word } from "./Word";
-import { words } from "./words";
+import { words as oWords } from "./words";
 import { WordsLeft } from "./WordsLeft";
 
 const LOCAL_STORAGE_WORDS = "words";
@@ -24,6 +24,13 @@ class App extends React.Component<{}, IState> {
   constructor(props: {}) {
     super(props);
 
+    window.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.keyCode === 82 || e.keyCode === 32) {
+        // R key or Space
+        this.load();
+      }
+    });
+
     let savedWords: string[][];
 
     try {
@@ -36,7 +43,7 @@ class App extends React.Component<{}, IState> {
         throw new Error();
       }
     } catch (e) {
-      savedWords = words;
+      savedWords = oWords;
       localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(savedWords));
     }
 
@@ -78,6 +85,13 @@ class App extends React.Component<{}, IState> {
       wordInEnglish: word[1],
       wordInSwedish: word[0]
     });
+
+    if (this.state.words.length === 0) {
+      this.setState({
+        words: oWords
+      });
+      localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(oWords));
+    }
   };
 
   public componentDidMount() {
