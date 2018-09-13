@@ -1,12 +1,16 @@
 import axios from "axios";
 import * as React from "react";
 import words from "./google-10000-english";
+import { InfoButton } from "./InfoButton";
 import { IWord } from "./IWord";
 import { ReloadButton } from "./ReloadButton";
+import { ThemeButton } from "./ThemeButton";
 import { Word } from "./Word";
 import { withTranslator } from "./WordTranslator";
 
 const LOCAL_STORAGE_WORDS = "words";
+const LOCAL_STORAGE_THEME = "theme";
+
 const clean = (x: string) =>
   (/<strong>:<\/strong>(\D+)<strong>:<\/strong>/.exec(x) as RegExpExecArray)[1];
 const randomIn = (x: string[]) => x[Math.floor(Math.random() * x.length)];
@@ -25,9 +29,10 @@ const shuffle = (arr: string[]) => {
 };
 
 interface IState {
+  errorRetry: number;
+  theme: number;
   words: string[];
   word: IWord | null;
-  errorRetry: number;
 }
 
 class App extends React.Component<{}, IState> {
@@ -50,14 +55,35 @@ class App extends React.Component<{}, IState> {
       localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(savedWords));
     }
 
+    const localTheme = localStorage.getItem(LOCAL_STORAGE_THEME);
+    const theme = localTheme ? parseInt(localTheme, 10) : 0;
+
+    localStorage.setItem(LOCAL_STORAGE_THEME, theme.toString());
+
     this.state = {
       errorRetry: 0,
+      theme,
       word: null,
       words: savedWords
     };
   }
 
-  public load() {
+  public info = () => {
+    window.open("https://github.com/singuerinc/swedish-wotd");
+  };
+
+  public changeTheme = () => {
+    this.setState(
+      prevState => ({
+        theme: (prevState.theme + 1) % 3
+      }),
+      () => {
+        localStorage.setItem(LOCAL_STORAGE_THEME, this.state.theme.toString());
+      }
+    );
+  };
+
+  public load = () => {
     // axios.get(`/.netlify/functions/wotd`).then(({ data }) => {
     //   this.setState({
     //     word: data
@@ -68,8 +94,6 @@ class App extends React.Component<{}, IState> {
     const [word, ...rest] = this.state.words;
     localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(rest));
 
-    console.log("saving to local storage:", rest.length);
-
     this.setState({
       words: rest,
       word: {
@@ -79,7 +103,7 @@ class App extends React.Component<{}, IState> {
         date: ""
       }
     });
-  }
+  };
 
   public onTranlationError(e: Error) {
     this.setState(
@@ -95,7 +119,6 @@ class App extends React.Component<{}, IState> {
   }
 
   public onTranslationSuccess(word: string) {
-    console.log("gotcha", word);
     this.setState({
       errorRetry: 0
     });
@@ -106,15 +129,14 @@ class App extends React.Component<{}, IState> {
   }
 
   public render() {
-    const { word } = this.state;
+    const { word, theme } = this.state;
 
     // <div dangerouslySetInnerHTML={{ __html: clean(word.description) }} />;
     // <a href={word.link}>{word.link}</a>
 
     if (word) {
-      console.log(word);
       return (
-        <div className="app-container">
+        <div className={`app-container theme-${theme}`}>
           <div className="word-container">
             <WordTranslator
               onError={(e: Error) => this.onTranlationError(e)}
@@ -123,11 +145,17 @@ class App extends React.Component<{}, IState> {
             />
             <SmallWord word={word} />
           </div>
-          <ReloadButton
-            onClick={() => {
-              this.load();
-            }}
-          />
+          <ul className="settings">
+            <li>
+              <InfoButton onClick={this.info} />
+            </li>
+            <li>
+              <ReloadButton onClick={this.load} />
+            </li>
+            <li>
+              <ThemeButton theme={theme} onClick={this.changeTheme} />
+            </li>
+          </ul>
         </div>
       );
     } else {

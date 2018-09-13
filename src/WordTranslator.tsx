@@ -18,7 +18,6 @@ const load = async (text: string) => {
   );
 
   const res = wordOrEmpty(data);
-  console.log(res);
 
   if (res === "") {
     throw new Error("There is no translation for this word.");
