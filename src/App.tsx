@@ -14,7 +14,6 @@ const SmallWord = ({ word }: { word: string }) => (
 );
 
 interface IState {
-  errorRetry: number;
   theme: number;
   words: string[][];
   wordInEnglish: string | null;
@@ -47,7 +46,6 @@ class App extends React.Component<{}, IState> {
     localStorage.setItem(LOCAL_STORAGE_THEME, theme.toString());
 
     this.state = {
-      errorRetry: 0,
       theme,
       wordInEnglish: null,
       wordInSwedish: null,
