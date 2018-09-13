@@ -70,7 +70,7 @@ class App extends React.Component<{}, IState> {
 
   public load = () => {
     const [word, ...rest] = this.state.words;
-    console.log(rest.length);
+
     localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(rest));
 
     this.setState({
