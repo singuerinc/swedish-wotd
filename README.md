@@ -8,7 +8,7 @@ Because I live in Sweden and I am learning Swedish. This is a way to learn new w
 
 ## What
 
-A project to test learn more about some technologies:
+A project to test/learn more about some technologies:
 
 - React
 - Lambda
