@@ -75,8 +75,8 @@ class App extends React.Component<{}, IState> {
 
     this.setState({
       words: rest,
-      wordInEnglish: word[0],
-      wordInSwedish: word[1]
+      wordInEnglish: word[1],
+      wordInSwedish: word[0]
     });
   };
 
