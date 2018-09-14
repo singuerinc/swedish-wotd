@@ -1,7 +1,8 @@
 import * as React from "react";
-import { withBaseButton } from "./BaseButton";
-import { InfoIcon } from "./icons/InfoIcon";
-import { ReloadIcon } from "./icons/ReloadIcon";
+import { InfoButton } from "./buttons/InfoButton";
+import { ThemeButton } from "./buttons/ThemeButton";
+
+import { ReloadButton } from "./buttons/ReloadButton";
 import {
   analitycs,
   localCountOrFallback,
@@ -16,13 +17,9 @@ import {
   updateWordInEnglish,
   updateWordInSwedish
 } from "./store";
-import { ThemeButton } from "./ThemeButton";
 import { Word } from "./Word";
 import { WordsCounter } from "./WordCounter";
 import { words as defaultDictionary } from "./words";
-
-const InfoButton = withBaseButton(InfoIcon);
-const ReloadButton = withBaseButton(ReloadIcon);
 
 const LOCAL_STORAGE_WORDS = "words";
 const LOCAL_STORAGE_WORD_COUNT = "word_count";
