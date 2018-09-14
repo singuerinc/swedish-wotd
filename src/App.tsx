@@ -2,17 +2,24 @@ import * as React from "react";
 import { withBaseButton } from "./BaseButton";
 import { InfoIcon } from "./icons/InfoIcon";
 import { ReloadIcon } from "./icons/ReloadIcon";
-import { ThemeButton } from "./ThemeButton";
 import {
   analitycs,
   localCountOrFallback,
   localDictionaryOrFallback,
   localThemeOrFallback,
   save
-} from "./utils";
+} from "./impure";
+import {
+  incrementTheme,
+  incrementWordCount,
+  updateDictionary,
+  updateWordInEnglish,
+  updateWordInSwedish
+} from "./store";
+import { ThemeButton } from "./ThemeButton";
 import { Word } from "./Word";
 import { WordsCounter } from "./WordCounter";
-import { words as oWords } from "./words";
+import { words as defaultDictionary } from "./words";
 
 const InfoButton = withBaseButton(InfoIcon);
 const ReloadButton = withBaseButton(ReloadIcon);
@@ -46,7 +53,7 @@ class App extends React.Component<{}, IState> {
 
     const dictionary: string[][] = localDictionaryOrFallback(
       LOCAL_STORAGE_WORDS,
-      oWords
+      defaultDictionary
     );
     save(LOCAL_STORAGE_WORDS, JSON.stringify(dictionary));
 
@@ -63,47 +70,6 @@ class App extends React.Component<{}, IState> {
       words: dictionary
     };
   }
-
-  public info = () => {
-    window.open("https://github.com/singuerinc/swedish-wotd");
-  };
-
-  public changeTheme = () => {
-    const theme = (this.state.theme + 1) % 3;
-
-    save(LOCAL_STORAGE_THEME, theme);
-
-    this.setState({
-      theme
-    });
-  };
-
-  public load = () => {
-    const { words, wordCount } = this.state;
-    const [[wordInSwedish, wordInEnglish], ...rest] = words;
-
-    save(LOCAL_STORAGE_WORDS, JSON.stringify(rest));
-    save(LOCAL_STORAGE_WORD_COUNT, JSON.stringify(wordCount));
-
-    const count = wordCount + 1;
-
-    analitycs(count);
-
-    this.setState({
-      words: rest,
-      wordCount: count,
-      wordInEnglish,
-      wordInSwedish
-    });
-
-    if (this.state.words.length === 0) {
-      this.setState({
-        words: oWords
-      });
-
-      save(LOCAL_STORAGE_WORDS, JSON.stringify(oWords));
-    }
-  };
 
   public componentDidMount() {
     this.load();
@@ -137,6 +103,41 @@ class App extends React.Component<{}, IState> {
       return null;
     }
   }
+
+  private info = () => {
+    window.open("https://github.com/singuerinc/swedish-wotd");
+  };
+
+  private changeTheme = () => {
+    this.setState(incrementTheme, () => {
+      save(LOCAL_STORAGE_THEME, this.state.theme);
+    });
+  };
+
+  private load = () => {
+    const [[wordInSwedish, wordInEnglish], ...dictionary] = this.state.words;
+
+    this.setState(updateWordInEnglish(wordInEnglish));
+    this.setState(updateWordInSwedish(wordInSwedish));
+    this.setState(incrementWordCount, () => {
+      const { wordCount } = this.state;
+
+      analitycs(wordCount);
+      save(LOCAL_STORAGE_WORD_COUNT, JSON.stringify(wordCount));
+    });
+
+    this.setState(updateDictionary(dictionary), () => {
+      if (this.state.words.length === 0) {
+        // we don't have more words to show,
+        // fallback to the default dictionary
+        this.setState(updateDictionary(defaultDictionary), () => {
+          save(LOCAL_STORAGE_WORDS, JSON.stringify(this.state.words));
+        });
+      } else {
+        save(LOCAL_STORAGE_WORDS, JSON.stringify(dictionary));
+      }
+    });
+  };
 }
 
 export { App };
