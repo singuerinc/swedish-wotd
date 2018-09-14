@@ -87,7 +87,10 @@ class App extends React.Component<{}, IState> {
     const [word, ...rest] = this.state.words;
 
     localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(rest));
-    localStorage.setItem(LOCAL_STORAGE_WORD_COUNT, JSON.stringify(rest));
+    localStorage.setItem(
+      LOCAL_STORAGE_WORD_COUNT,
+      JSON.stringify(this.state.wordCount)
+    );
 
     this.setState(
       prevState => ({
