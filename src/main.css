@@ -56,7 +56,7 @@ body {
   color: #72723c;
 }
 
-.app-container .icon {
+.icon {
   width: 100%;
 }
 
@@ -70,7 +70,7 @@ body {
 }
 
 h1,
-.app-container .icon {
+.icon {
   margin: 0;
   padding: 0;
   font-size: 3rem;
@@ -112,11 +112,12 @@ h1,
 .info-btn {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  transition: opacity 300ms ease;
 }
 
 @media only screen and (min-width: 48rem) {
   h1,
-  .app-container .icon {
+  .icon {
     font-size: 8rem;
     height: 10.9375rem;
   }
@@ -132,5 +133,11 @@ h1,
   .word-counter,
   .words-left {
     font-weight: 500;
+  }
+
+  .reload-btn:hover,
+  .theme-btn:hover,
+  .info-btn:hover {
+    opacity: 0.4;
   }
 }
