@@ -39,14 +39,16 @@ describe("<ThemeButton />", () => {
   });
 
   describe("click", () => {
-    const props = {
-      theme: 0,
-      onClick: jest.fn()
-    };
+    it("should call onClick when is clicked", () => {
+      const props = {
+        theme: 0,
+        onClick: jest.fn()
+      };
 
-    const wrapper = shallow(<ThemeButton {...props} />);
-    wrapper.simulate("click");
+      const wrapper = shallow(<ThemeButton {...props} />);
+      wrapper.simulate("click");
 
-    expect(props.onClick).toBeCalledTimes(1);
+      expect(props.onClick).toBeCalledTimes(1);
+    });
   });
 });

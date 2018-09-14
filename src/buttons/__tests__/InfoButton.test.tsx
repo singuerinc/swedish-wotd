@@ -1,17 +1,17 @@
 import { shallow } from "enzyme";
 import * as React from "react";
-import { ReloadIcon } from "../../icons/ReloadIcon";
-import { ReloadButton } from "../ReloadButton";
+import { InfoIcon } from "../../icons/InfoIcon";
+import { InfoButton } from "../InfoButton";
 
-describe("<ReloadButton />", () => {
+describe("<InfoButton />", () => {
   describe("children", () => {
-    it("should contain a <ReloadIcon /> component", () => {
+    it("should contain a <InfoIcon /> component", () => {
       const props = {
         onClick: () => {}
       };
 
-      const wrapper = shallow(<ReloadButton {...props} />);
-      expect(wrapper.find(ReloadIcon)).toHaveLength(1);
+      const wrapper = shallow(<InfoButton {...props} />);
+      expect(wrapper.find(InfoIcon)).toHaveLength(1);
     });
   });
 
@@ -22,7 +22,7 @@ describe("<ReloadButton />", () => {
         onClick: jest.fn()
       };
 
-      const wrapper = shallow(<ReloadButton {...props} />);
+      const wrapper = shallow(<InfoButton {...props} />);
       wrapper.simulate("click");
 
       expect(props.onClick).toBeCalledTimes(1);
