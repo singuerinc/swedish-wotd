@@ -3,10 +3,12 @@ import { InfoButton } from "./InfoButton";
 import { ReloadButton } from "./ReloadButton";
 import { ThemeButton } from "./ThemeButton";
 import { Word } from "./Word";
+import { WordsCounter } from "./WordCounter";
 import { words as oWords } from "./words";
 import { WordsLeft } from "./WordsLeft";
 
 const LOCAL_STORAGE_WORDS = "words";
+const LOCAL_STORAGE_WORD_COUNT = "word_count";
 const LOCAL_STORAGE_THEME = "theme";
 
 const SmallWord = ({ word }: { word: string }) => (
@@ -16,6 +18,7 @@ const SmallWord = ({ word }: { word: string }) => (
 interface IState {
   theme: number;
   words: string[][];
+  wordCount: number;
   wordInEnglish: string | null;
   wordInSwedish: string | null;
 }
@@ -52,8 +55,13 @@ class App extends React.Component<{}, IState> {
 
     localStorage.setItem(LOCAL_STORAGE_THEME, theme.toString());
 
+    const wordCount =
+      parseInt(localStorage.getItem(LOCAL_STORAGE_WORD_COUNT) as string, 10) ||
+      1;
+
     this.state = {
       theme,
+      wordCount,
       wordInEnglish: null,
       wordInSwedish: null,
       words: savedWords
@@ -79,12 +87,14 @@ class App extends React.Component<{}, IState> {
     const [word, ...rest] = this.state.words;
 
     localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(rest));
+    localStorage.setItem(LOCAL_STORAGE_WORD_COUNT, JSON.stringify(rest));
 
-    this.setState({
+    this.setState(prevState => ({
       words: rest,
+      wordCount: prevState.wordCount + 1,
       wordInEnglish: word[1],
       wordInSwedish: word[0]
-    });
+    }));
 
     if (this.state.words.length === 0) {
       this.setState({
@@ -99,12 +109,7 @@ class App extends React.Component<{}, IState> {
   }
 
   public render() {
-    const {
-      wordInEnglish,
-      wordInSwedish,
-      theme,
-      words: wordsLeft
-    } = this.state;
+    const { wordCount, wordInEnglish, wordInSwedish, theme } = this.state;
 
     if (wordInEnglish && wordInSwedish) {
       return (
@@ -112,7 +117,7 @@ class App extends React.Component<{}, IState> {
           <div className="word-container">
             <Word word={wordInSwedish} />
             <SmallWord word={wordInEnglish} />
-            <WordsLeft words={wordsLeft} />
+            <WordsCounter counter={wordCount} />
           </div>
           <ul className="settings">
             <li>

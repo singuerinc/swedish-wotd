@@ -86,6 +86,7 @@ h1,
   height: auto;
 }
 
+.word-counter,
 .words-left {
   font-weight: 300;
   opacity: 0.4;
@@ -127,6 +128,7 @@ h1,
     padding: 2rem;
   }
 
+  .word-counter,
   .words-left {
     font-weight: 500;
   }
