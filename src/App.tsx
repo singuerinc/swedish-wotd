@@ -1,11 +1,21 @@
 import * as React from "react";
-import { InfoButton } from "./InfoButton";
-import { ReloadButton } from "./ReloadButton";
+import { withBaseButton } from "./BaseButton";
+import { InfoIcon } from "./icons/InfoIcon";
+import { ReloadIcon } from "./icons/ReloadIcon";
 import { ThemeButton } from "./ThemeButton";
+import {
+  analitycs,
+  localCountOrFallback,
+  localDictionaryOrFallback,
+  localThemeOrFallback,
+  save
+} from "./utils";
 import { Word } from "./Word";
 import { WordsCounter } from "./WordCounter";
 import { words as oWords } from "./words";
-import { WordsLeft } from "./WordsLeft";
+
+const InfoButton = withBaseButton(InfoIcon);
+const ReloadButton = withBaseButton(ReloadIcon);
 
 const LOCAL_STORAGE_WORDS = "words";
 const LOCAL_STORAGE_WORD_COUNT = "word_count";
@@ -28,43 +38,29 @@ class App extends React.Component<{}, IState> {
     super(props);
 
     window.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.keyCode === 82 || e.keyCode === 32) {
-        // R key or Space
+      if (e.keyCode === 32) {
+        // load a new word on Space key press
         this.load();
       }
     });
 
-    let savedWords: string[][];
+    const dictionary: string[][] = localDictionaryOrFallback(
+      LOCAL_STORAGE_WORDS,
+      oWords
+    );
+    save(LOCAL_STORAGE_WORDS, JSON.stringify(dictionary));
 
-    try {
-      savedWords = JSON.parse(localStorage.getItem(
-        LOCAL_STORAGE_WORDS
-      ) as string);
+    const theme = localThemeOrFallback(LOCAL_STORAGE_THEME, 0);
+    save(LOCAL_STORAGE_THEME, theme);
 
-      if (savedWords.length <= 0) {
-        // get words from network
-        throw new Error();
-      }
-    } catch (e) {
-      savedWords = oWords;
-      localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(savedWords));
-    }
-
-    const localTheme = localStorage.getItem(LOCAL_STORAGE_THEME);
-    const theme = localTheme ? parseInt(localTheme, 10) : 0;
-
-    localStorage.setItem(LOCAL_STORAGE_THEME, theme.toString());
-
-    const wordCount =
-      parseInt(localStorage.getItem(LOCAL_STORAGE_WORD_COUNT) as string, 10) ||
-      0;
+    const wordCount = localCountOrFallback(LOCAL_STORAGE_WORD_COUNT, 0);
 
     this.state = {
       theme,
-      wordCount,
+      wordCount: wordCount + 1,
       wordInEnglish: null,
       wordInSwedish: null,
-      words: savedWords
+      words: dictionary
     };
   }
 
@@ -73,49 +69,39 @@ class App extends React.Component<{}, IState> {
   };
 
   public changeTheme = () => {
-    this.setState(
-      prevState => ({
-        theme: (prevState.theme + 1) % 3
-      }),
-      () => {
-        localStorage.setItem(LOCAL_STORAGE_THEME, this.state.theme.toString());
-      }
-    );
+    const theme = (this.state.theme + 1) % 3;
+
+    save(LOCAL_STORAGE_THEME, theme);
+
+    this.setState({
+      theme
+    });
   };
 
   public load = () => {
-    const [word, ...rest] = this.state.words;
+    const { words, wordCount } = this.state;
+    const [[wordInSwedish, wordInEnglish], ...rest] = words;
 
-    localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(rest));
-    localStorage.setItem(
-      LOCAL_STORAGE_WORD_COUNT,
-      JSON.stringify(this.state.wordCount)
-    );
+    save(LOCAL_STORAGE_WORDS, JSON.stringify(rest));
+    save(LOCAL_STORAGE_WORD_COUNT, JSON.stringify(wordCount));
 
-    this.setState(
-      prevState => ({
-        words: rest,
-        wordCount: prevState.wordCount + 1,
-        wordInEnglish: word[1],
-        wordInSwedish: word[0]
-      }),
-      () => {
-        try {
-          // @ts-ignore
-          gtag("event", "word", {
-            event_category: "load",
-            event_label: "count",
-            value: this.state.wordCount
-          });
-        } catch (e) {}
-      }
-    );
+    const count = wordCount + 1;
+
+    analitycs(count);
+
+    this.setState({
+      words: rest,
+      wordCount: count,
+      wordInEnglish,
+      wordInSwedish
+    });
 
     if (this.state.words.length === 0) {
       this.setState({
         words: oWords
       });
-      localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(oWords));
+
+      save(LOCAL_STORAGE_WORDS, JSON.stringify(oWords));
     }
   };
 
