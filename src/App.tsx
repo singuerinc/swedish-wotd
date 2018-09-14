@@ -57,7 +57,7 @@ class App extends React.Component<{}, IState> {
 
     const wordCount =
       parseInt(localStorage.getItem(LOCAL_STORAGE_WORD_COUNT) as string, 10) ||
-      1;
+      0;
 
     this.state = {
       theme,
