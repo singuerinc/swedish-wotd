@@ -16,12 +16,10 @@ A project to test/learn more about some technologies:
 ## Features
 
 - Display the word English and it translation in Swedish
-- Themes: Night, Cloudy, Sunny
 
-## Screenshots
+## Themes
 
-![Night](./screenshots/theme-night.png)
-
-![Cloudy](./screenshots/theme-cloudy.png)
-
-![Sunny](./screenshots/theme-sunny.png)
+| Night                                          | Cloudy                                           | Sunny                                          |
+| ---------------------------------------------- | ------------------------------------------------ | ---------------------------------------------- |
+| ![Night](./screenshots/theme-night-mobile.png) | ![Cloudy](./screenshots/theme-cloudy-mobile.png) | ![Sunny](./screenshots/theme-sunny-mobile.png) |
+| ![Night](./screenshots/theme-night.png)        | ![Cloudy](./screenshots/theme-cloudy.png)        | ![Sunny](./screenshots/theme-sunny.png)        |
