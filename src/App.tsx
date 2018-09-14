@@ -3,6 +3,9 @@ import { InfoButton } from "./buttons/InfoButton";
 import { ThemeButton } from "./buttons/ThemeButton";
 
 import { ReloadButton } from "./buttons/ReloadButton";
+import { Word } from "./components/Word";
+import { WordsCounter } from "./components/WordCounter";
+import { LoadingIcon } from "./icons/LoadingIcon";
 import {
   analitycs,
   localCountOrFallback,
@@ -17,8 +20,6 @@ import {
   updateWordInEnglish,
   updateWordInSwedish
 } from "./store";
-import { Word } from "./Word";
-import { WordsCounter } from "./WordCounter";
 import { words as defaultDictionary } from "./words";
 
 const LOCAL_STORAGE_WORDS = "words";
