@@ -64,7 +64,7 @@ class App extends React.Component<{}, IState> {
 
     this.state = {
       theme,
-      wordCount: wordCount + 1,
+      wordCount,
       wordInEnglish: null,
       wordInSwedish: null,
       words: dictionary
