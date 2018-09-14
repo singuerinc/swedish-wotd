@@ -89,12 +89,24 @@ class App extends React.Component<{}, IState> {
     localStorage.setItem(LOCAL_STORAGE_WORDS, JSON.stringify(rest));
     localStorage.setItem(LOCAL_STORAGE_WORD_COUNT, JSON.stringify(rest));
 
-    this.setState(prevState => ({
-      words: rest,
-      wordCount: prevState.wordCount + 1,
-      wordInEnglish: word[1],
-      wordInSwedish: word[0]
-    }));
+    this.setState(
+      prevState => ({
+        words: rest,
+        wordCount: prevState.wordCount + 1,
+        wordInEnglish: word[1],
+        wordInSwedish: word[0]
+      }),
+      () => {
+        try {
+          // @ts-ignore
+          gtag("event", "word", {
+            event_category: "load",
+            event_label: "count",
+            value: this.state.wordCount
+          });
+        } catch (e) {}
+      }
+    );
 
     if (this.state.words.length === 0) {
       this.setState({
