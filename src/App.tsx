@@ -4,7 +4,7 @@ import { ThemeButton } from "./components/buttons/ThemeButton";
 
 import { ReloadButton } from "./components/buttons/ReloadButton";
 import { Word } from "./components/Word";
-import { WordsCounter } from "./components/WordCounter";
+import { WordCounter } from "./components/WordCounter";
 import {
   analitycs,
   localCountOrFallback,
@@ -81,7 +81,7 @@ class App extends React.Component<{}, IState> {
           <div className="word-container">
             <Word word={wordInSwedish} />
             <SmallWord word={wordInEnglish} />
-            <WordsCounter counter={wordCount} />
+            <WordCounter counter={wordCount} />
           </div>
           <ul className="settings">
             <li>
