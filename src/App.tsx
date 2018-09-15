@@ -8,9 +8,9 @@ import { Word } from "./components/Word";
 import { WordCounter } from "./components/WordCounter";
 import {
   analitycs,
-  localCountOrFallback,
-  localDictionaryOrFallback,
-  localThemeOrFallback,
+  loadDictionary,
+  loadTheme,
+  loadWordCount,
   save
 } from "./utils/impure";
 import {
@@ -25,6 +25,13 @@ import { words as defaultDictionary } from "./utils/words";
 const LOCAL_STORAGE_WORDS = "words";
 const LOCAL_STORAGE_WORD_COUNT = "word_count";
 const LOCAL_STORAGE_THEME = "theme";
+
+const saveDictionary = (dictionary: string[][]) =>
+  save(localStorage, LOCAL_STORAGE_WORDS, JSON.stringify(dictionary));
+const saveWordCount = (wordCount: number) =>
+  save(localStorage, LOCAL_STORAGE_WORD_COUNT, JSON.stringify(wordCount));
+const saveTheme = (theme: number) =>
+  save(localStorage, LOCAL_STORAGE_THEME, theme);
 
 interface IState {
   theme: number;
@@ -45,16 +52,17 @@ class App extends React.Component<{}, IState> {
       }
     });
 
-    const dictionary: string[][] = localDictionaryOrFallback(
+    const dictionary: string[][] = loadDictionary(
+      localStorage,
       LOCAL_STORAGE_WORDS,
       defaultDictionary
     );
-    save(LOCAL_STORAGE_WORDS, JSON.stringify(dictionary));
+    saveDictionary(dictionary);
 
-    const theme = localThemeOrFallback(LOCAL_STORAGE_THEME, 0);
-    save(LOCAL_STORAGE_THEME, theme);
+    const theme = loadTheme(localStorage, LOCAL_STORAGE_THEME);
+    saveTheme(theme);
 
-    const wordCount = localCountOrFallback(LOCAL_STORAGE_WORD_COUNT, 0);
+    const wordCount = loadWordCount(localStorage, LOCAL_STORAGE_WORD_COUNT);
 
     this.state = {
       theme,
@@ -104,7 +112,7 @@ class App extends React.Component<{}, IState> {
 
   private changeTheme = () => {
     this.setState(incrementTheme, () => {
-      save(LOCAL_STORAGE_THEME, this.state.theme);
+      saveTheme(this.state.theme);
     });
   };
 
@@ -117,7 +125,7 @@ class App extends React.Component<{}, IState> {
       const { wordCount } = this.state;
 
       analitycs(wordCount);
-      save(LOCAL_STORAGE_WORD_COUNT, JSON.stringify(wordCount));
+      saveWordCount(wordCount);
     });
 
     this.setState(updateDictionary(dictionary), () => {
@@ -125,10 +133,10 @@ class App extends React.Component<{}, IState> {
         // we don't have more words to show,
         // fallback to the default dictionary
         this.setState(updateDictionary(defaultDictionary), () => {
-          save(LOCAL_STORAGE_WORDS, JSON.stringify(this.state.words));
+          saveDictionary(this.state.words);
         });
       } else {
-        save(LOCAL_STORAGE_WORDS, JSON.stringify(dictionary));
+        saveDictionary(dictionary);
       }
     });
   };

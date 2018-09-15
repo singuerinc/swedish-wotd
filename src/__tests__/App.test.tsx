@@ -27,7 +27,6 @@ describe("<App />", () => {
 
     it("should contain the settings", () => {
       const wrapper = shallow(<App />);
-      console.log(wrapper.debug());
       const settings = wrapper.find(".settings");
 
       expect(settings).toHaveLength(1);
