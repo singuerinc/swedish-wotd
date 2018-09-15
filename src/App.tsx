@@ -1,26 +1,25 @@
 import * as React from "react";
-import { InfoButton } from "./buttons/InfoButton";
-import { ThemeButton } from "./buttons/ThemeButton";
+import { InfoButton } from "./components/buttons/InfoButton";
+import { ThemeButton } from "./components/buttons/ThemeButton";
 
-import { ReloadButton } from "./buttons/ReloadButton";
+import { ReloadButton } from "./components/buttons/ReloadButton";
 import { Word } from "./components/Word";
 import { WordsCounter } from "./components/WordCounter";
-import { LoadingIcon } from "./icons/LoadingIcon";
 import {
   analitycs,
   localCountOrFallback,
   localDictionaryOrFallback,
   localThemeOrFallback,
   save
-} from "./impure";
+} from "./utils/impure";
 import {
   incrementTheme,
   incrementWordCount,
   updateDictionary,
   updateWordInEnglish,
   updateWordInSwedish
-} from "./store";
-import { words as defaultDictionary } from "./words";
+} from "./utils/store";
+import { words as defaultDictionary } from "./utils/words";
 
 const LOCAL_STORAGE_WORDS = "words";
 const LOCAL_STORAGE_WORD_COUNT = "word_count";

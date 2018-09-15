@@ -1,6 +1,6 @@
 import { shallow } from "enzyme";
 import * as React from "react";
-import { ReloadIcon } from "../../icons/ReloadIcon";
+import { ReloadIcon } from "../../../icons/ReloadIcon";
 import { ReloadButton } from "../ReloadButton";
 
 describe("<ReloadButton />", () => {

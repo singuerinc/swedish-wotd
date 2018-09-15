@@ -1,8 +1,8 @@
 import { shallow } from "enzyme";
 import * as React from "react";
-import { Cloudy } from "../../icons/Cloudy";
-import { Night } from "../../icons/Night";
-import { Sunny } from "../../icons/Sunny";
+import { Cloudy } from "../../../icons/Cloudy";
+import { Night } from "../../../icons/Night";
+import { Sunny } from "../../../icons/Sunny";
 import { ThemeButton } from "../ThemeButton";
 
 describe("<ThemeButton />", () => {
