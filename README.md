@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/singuerinc/swedish-wotd/tree/master.svg?style=svg)](https://circleci.com/gh/singuerinc/swedish-wotd/tree/master)
+
 # Swedish word of the day
 
 Another _"Word of the day website"_... I know.
