@@ -7,6 +7,8 @@ import { ThemeButton } from "../components/buttons/ThemeButton";
 import { SmallWord } from "../components/SmallWord";
 import { Word } from "../components/Word";
 import { WordCounter } from "../components/WordCounter";
+import { onSpacePress } from "../utils/keys";
+jest.mock("../utils/keys");
 
 describe("<App />", () => {
   describe("children", () => {
@@ -40,6 +42,17 @@ describe("<App />", () => {
       expect(li1.find(InfoButton)).toHaveLength(1);
       expect(li2.find(ReloadButton)).toHaveLength(1);
       expect(li3.find(ThemeButton)).toHaveLength(1);
+    });
+  });
+
+  describe("keypress listener", () => {
+    it("should add a listener to load a new word", () => {
+      const wrapper = shallow(<App />);
+      wrapper.simulate("keypress");
+
+      const callback = expect.any(Function);
+
+      expect(onSpacePress).toHaveBeenCalledWith(callback);
     });
   });
 });

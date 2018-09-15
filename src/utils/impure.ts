@@ -1,10 +1,5 @@
 import { resolve } from "dns";
 
-export interface ILocalStorage {
-  setItem: (where: string, what: string) => boolean;
-  getItem: (where: string) => string | null;
-}
-
 export function analitycs(count: number) {
   try {
     // @ts-ignore
@@ -16,11 +11,11 @@ export function analitycs(count: number) {
   } catch (e) {}
 }
 
-export function get(ls: ILocalStorage, from: string) {
+export function get(ls: Storage, from: string) {
   return ls.getItem(from);
 }
 
-export function save(ls: ILocalStorage, where: string, what: any): boolean {
+export function save(ls: Storage, where: string, what: any): boolean {
   try {
     ls.setItem(where, String(what));
     return true;
@@ -30,7 +25,7 @@ export function save(ls: ILocalStorage, where: string, what: any): boolean {
 }
 
 export function loadDictionary(
-  ls: ILocalStorage,
+  ls: Storage,
   local: string,
   fallback: string[][]
 ) {
@@ -49,7 +44,7 @@ export function loadDictionary(
   }
 }
 
-export function loadTheme(ls: ILocalStorage, local: string): number {
+export function loadTheme(ls: Storage, local: string): number {
   try {
     const localTheme = get(ls, local);
     if (localTheme === null) {
@@ -62,7 +57,7 @@ export function loadTheme(ls: ILocalStorage, local: string): number {
   }
 }
 
-export function loadWordCount(ls: ILocalStorage, local: string) {
+export function loadWordCount(ls: Storage, local: string) {
   try {
     const lsValue = get(ls, local);
     if (lsValue === null) {

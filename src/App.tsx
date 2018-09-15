@@ -13,6 +13,7 @@ import {
   loadWordCount,
   save
 } from "./utils/impure";
+import { onSpacePress } from "./utils/keys";
 import {
   incrementTheme,
   incrementWordCount,
@@ -45,12 +46,7 @@ class App extends React.Component<{}, IState> {
   constructor(props: {}) {
     super(props);
 
-    window.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.keyCode === 32) {
-        // load a new word on Space key press
-        this.load();
-      }
-    });
+    window.addEventListener("keydown", onSpacePress(this.load));
 
     const dictionary: string[][] = loadDictionary(
       localStorage,
