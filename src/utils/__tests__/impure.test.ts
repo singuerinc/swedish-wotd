@@ -4,8 +4,8 @@ describe("impure", () => {
   describe("getItem", () => {
     it("should return a null value if it does not exist", () => {
       const localStorageStub = {
-        setItem: jest.fn(),
-        getItem: jest.fn().mockImplementation(() => null)
+        getItem: jest.fn().mockImplementation(() => null),
+        setItem: jest.fn()
       };
 
       expect(get(localStorageStub, "foo")).toBeNull();
@@ -13,8 +13,8 @@ describe("impure", () => {
 
     it("should return a the value if it is stored", () => {
       const localStorageStub = {
-        setItem: jest.fn(),
-        getItem: jest.fn().mockImplementation(() => "bar")
+        getItem: jest.fn().mockImplementation(() => "bar"),
+        setItem: jest.fn()
       };
 
       expect(get(localStorageStub, "foo")).toBe("bar");
@@ -24,10 +24,10 @@ describe("impure", () => {
   describe("setItem", () => {
     it("should return a false if it is not possible to write in the localStorage", () => {
       const localStorageStub = {
+        getItem: jest.fn(),
         setItem: jest.fn().mockImplementation(() => {
           throw new Error();
-        }),
-        getItem: jest.fn()
+        })
       };
 
       expect(save(localStorageStub, "foo", "bar")).toBeFalsy();
@@ -46,8 +46,8 @@ describe("impure", () => {
   describe("loadTheme", () => {
     it("should return the theme stored as number", () => {
       const localStorageStub = {
-        setItem: jest.fn(),
-        getItem: jest.fn().mockImplementation(() => "1")
+        getItem: jest.fn().mockImplementation(() => "1"),
+        setItem: jest.fn()
       };
 
       expect(loadTheme(localStorageStub, "foo")).toBe(1);
@@ -55,8 +55,8 @@ describe("impure", () => {
 
     it("should return 0 when there is no theme stored", () => {
       const localStorageStub = {
-        setItem: jest.fn(),
-        getItem: jest.fn().mockImplementation(() => null)
+        getItem: jest.fn().mockImplementation(() => null),
+        setItem: jest.fn()
       };
 
       expect(loadTheme(localStorageStub, "foo")).toBe(0);
@@ -66,8 +66,8 @@ describe("impure", () => {
   describe("loadWordCount", () => {
     it("should return the word count stored as number", () => {
       const localStorageStub = {
-        setItem: jest.fn(),
-        getItem: jest.fn().mockImplementation(() => "10")
+        getItem: jest.fn().mockImplementation(() => "10"),
+        setItem: jest.fn()
       };
 
       expect(loadWordCount(localStorageStub, "foo")).toBe(10);
@@ -75,8 +75,8 @@ describe("impure", () => {
 
     it("should return 0 when there is no counter stored", () => {
       const localStorageStub = {
-        setItem: jest.fn(),
-        getItem: jest.fn().mockImplementation(() => null)
+        getItem: jest.fn().mockImplementation(() => null),
+        setItem: jest.fn()
       };
 
       expect(loadWordCount(localStorageStub, "foo")).toBe(0);
@@ -86,10 +86,10 @@ describe("impure", () => {
   describe("loadDictionary", () => {
     it("should return the dictionary stored", () => {
       const localStorageStub = {
-        setItem: jest.fn(),
         getItem: jest
           .fn()
-          .mockImplementation(() => '[["hello","hej"],["bye bye","hejdå"]]')
+          .mockImplementation(() => '[["hello","hej"],["bye bye","hejdå"]]'),
+        setItem: jest.fn()
       };
 
       expect(loadDictionary(localStorageStub, "foo", [])).toStrictEqual([
@@ -100,8 +100,8 @@ describe("impure", () => {
 
     it("should return the fallback dictionary if is not stored", () => {
       const localStorageStub = {
-        setItem: jest.fn(),
-        getItem: jest.fn().mockImplementation(() => null)
+        getItem: jest.fn().mockImplementation(() => null),
+        setItem: jest.fn()
       };
 
       expect(
@@ -114,8 +114,8 @@ describe("impure", () => {
 
     it("should return the fallback dictionary if the stored dictionary does not contain anything", () => {
       const localStorageStub = {
-        setItem: jest.fn(),
-        getItem: jest.fn().mockImplementation(() => "[]")
+        getItem: jest.fn().mockImplementation(() => "[]"),
+        setItem: jest.fn()
       };
 
       expect(

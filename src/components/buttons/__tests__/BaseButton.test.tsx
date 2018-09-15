@@ -7,7 +7,9 @@ describe("withBaseButton", () => {
   describe("component", () => {
     it("should contain a div container", () => {
       const props = {
-        onClick: () => {}
+        onClick: () => {
+          //
+        }
       };
 
       const InfoButton = withBaseButton(InfoIcon);
@@ -22,7 +24,9 @@ describe("withBaseButton", () => {
   describe("props", () => {
     it("should contain a div container", () => {
       const props = {
-        onClick: () => {}
+        onClick: () => {
+          //
+        }
       };
 
       const InfoButton = withBaseButton(InfoIcon);

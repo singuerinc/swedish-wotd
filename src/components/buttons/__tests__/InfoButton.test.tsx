@@ -7,7 +7,9 @@ describe("<InfoButton />", () => {
   describe("children", () => {
     it("should contain a <InfoIcon /> component", () => {
       const props = {
-        onClick: () => {}
+        onClick: () => {
+          //
+        }
       };
 
       const wrapper = shallow(<InfoButton {...props} />);
@@ -18,8 +20,8 @@ describe("<InfoButton />", () => {
   describe("click", () => {
     it("should call onClick when is clicked", () => {
       const props = {
-        theme: 0,
-        onClick: jest.fn()
+        onClick: jest.fn(),
+        theme: 0
       };
 
       const wrapper = shallow(<InfoButton {...props} />);

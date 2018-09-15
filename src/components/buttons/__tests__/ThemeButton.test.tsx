@@ -9,8 +9,10 @@ describe("<ThemeButton />", () => {
   describe("children", () => {
     it("should contain a <Night /> component when theme is 0", () => {
       const props = {
-        theme: 0,
-        onClick: () => {}
+        onClick: () => {
+          //
+        },
+        theme: 0
       };
 
       const wrapper = shallow(<ThemeButton {...props} />);
@@ -19,8 +21,10 @@ describe("<ThemeButton />", () => {
 
     it("should contain a <Cloudy /> component when theme is 1", () => {
       const props = {
-        theme: 1,
-        onClick: () => {}
+        onClick: () => {
+          //
+        },
+        theme: 1
       };
 
       const wrapper = shallow(<ThemeButton {...props} />);
@@ -29,8 +33,10 @@ describe("<ThemeButton />", () => {
 
     it("should contain a <Sunny /> component when theme is 2", () => {
       const props = {
-        theme: 2,
-        onClick: () => {}
+        onClick: () => {
+          //
+        },
+        theme: 2
       };
 
       const wrapper = shallow(<ThemeButton {...props} />);
@@ -41,8 +47,8 @@ describe("<ThemeButton />", () => {
   describe("click", () => {
     it("should call onClick when is clicked", () => {
       const props = {
-        theme: 0,
-        onClick: jest.fn()
+        onClick: jest.fn(),
+        theme: 0
       };
 
       const wrapper = shallow(<ThemeButton {...props} />);

@@ -1,5 +1,3 @@
-import { resolve } from "dns";
-
 export function analitycs(count: number) {
   try {
     // @ts-ignore
@@ -8,7 +6,9 @@ export function analitycs(count: number) {
       event_label: "count",
       value: count
     });
-  } catch (e) {}
+  } catch (e) {
+    //
+  }
 }
 
 export function get(ls: Storage, from: string) {

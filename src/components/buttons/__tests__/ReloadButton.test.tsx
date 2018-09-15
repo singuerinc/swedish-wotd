@@ -7,7 +7,9 @@ describe("<ReloadButton />", () => {
   describe("children", () => {
     it("should contain a <ReloadIcon /> component", () => {
       const props = {
-        onClick: () => {}
+        onClick: () => {
+          //
+        }
       };
 
       const wrapper = shallow(<ReloadButton {...props} />);
@@ -18,8 +20,8 @@ describe("<ReloadButton />", () => {
   describe("click", () => {
     it("should call onClick when is clicked", () => {
       const props = {
-        theme: 0,
-        onClick: jest.fn()
+        onClick: jest.fn(),
+        theme: 0
       };
 
       const wrapper = shallow(<ReloadButton {...props} />);

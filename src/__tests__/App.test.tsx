@@ -76,7 +76,9 @@ describe("<App />", () => {
       const wrapper = shallow(<App />);
       const app = wrapper.instance();
       app.setState = jest.fn().mockImplementation((state, callback) => {
-        callback && callback();
+        if (callback) {
+          callback();
+        }
       });
 
       const themeBtn = wrapper.find(ThemeButton);
@@ -94,7 +96,9 @@ describe("<App />", () => {
       const wrapper = shallow(<App />);
       const app: App = wrapper.instance();
       app.setState = jest.fn().mockImplementation((state, callback) => {
-        callback && callback();
+        if (callback) {
+          callback();
+        }
       });
 
       wrapper.setState({
