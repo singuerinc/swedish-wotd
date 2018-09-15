@@ -1,5 +1,9 @@
 [![CircleCI](https://circleci.com/gh/singuerinc/swedish-wotd/tree/master.svg?style=svg)](https://circleci.com/gh/singuerinc/swedish-wotd/tree/master)
 
+[![codecov](https://codecov.io/gh/singuerinc/swedish-wotd/branch/master/graph/badge.svg)](https://codecov.io/gh/singuerinc/swedish-wotd)
+
+[![Known Vulnerabilities](https://snyk.io/test/github/singuerinc/swedish-wotd/badge.svg)](https://snyk.io/test/github/singuerinc/swedish-wotd)
+
 # Swedish word of the day
 
 Another _"Word of the day website"_... I know.
