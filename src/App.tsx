@@ -3,6 +3,7 @@ import { InfoButton } from "./components/buttons/InfoButton";
 import { ThemeButton } from "./components/buttons/ThemeButton";
 
 import { ReloadButton } from "./components/buttons/ReloadButton";
+import { SmallWord } from "./components/SmallWord";
 import { Word } from "./components/Word";
 import { WordCounter } from "./components/WordCounter";
 import {
@@ -24,10 +25,6 @@ import { words as defaultDictionary } from "./utils/words";
 const LOCAL_STORAGE_WORDS = "words";
 const LOCAL_STORAGE_WORD_COUNT = "word_count";
 const LOCAL_STORAGE_THEME = "theme";
-
-const SmallWord = ({ word }: { word: string }) => (
-  <Word className="small" word={word} />
-);
 
 interface IState {
   theme: number;
