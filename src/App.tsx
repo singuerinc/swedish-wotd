@@ -1,36 +1,38 @@
 import * as React from "react";
-import { withBaseButton } from "./BaseButton";
-import { InfoIcon } from "./icons/InfoIcon";
-import { ReloadIcon } from "./icons/ReloadIcon";
+import { InfoButton } from "./components/buttons/InfoButton";
+import { ThemeButton } from "./components/buttons/ThemeButton";
+
+import { ReloadButton } from "./components/buttons/ReloadButton";
+import { SmallWord } from "./components/SmallWord";
+import { Word } from "./components/Word";
+import { WordCounter } from "./components/WordCounter";
 import {
   analitycs,
-  localCountOrFallback,
-  localDictionaryOrFallback,
-  localThemeOrFallback,
+  loadDictionary,
+  loadTheme,
+  loadWordCount,
   save
-} from "./impure";
+} from "./utils/impure";
+import { onSpacePress } from "./utils/keys";
 import {
   incrementTheme,
   incrementWordCount,
   updateDictionary,
   updateWordInEnglish,
   updateWordInSwedish
-} from "./store";
-import { ThemeButton } from "./ThemeButton";
-import { Word } from "./Word";
-import { WordsCounter } from "./WordCounter";
-import { words as defaultDictionary } from "./words";
-
-const InfoButton = withBaseButton(InfoIcon);
-const ReloadButton = withBaseButton(ReloadIcon);
+} from "./utils/store";
+import { words as defaultDictionary } from "./utils/words";
 
 const LOCAL_STORAGE_WORDS = "words";
 const LOCAL_STORAGE_WORD_COUNT = "word_count";
 const LOCAL_STORAGE_THEME = "theme";
 
-const SmallWord = ({ word }: { word: string }) => (
-  <Word className="small" word={word} />
-);
+const saveDictionary = (dictionary: string[][]) =>
+  save(localStorage, LOCAL_STORAGE_WORDS, JSON.stringify(dictionary));
+const saveWordCount = (wordCount: number) =>
+  save(localStorage, LOCAL_STORAGE_WORD_COUNT, JSON.stringify(wordCount));
+const saveTheme = (theme: number) =>
+  save(localStorage, LOCAL_STORAGE_THEME, theme);
 
 interface IState {
   theme: number;
@@ -44,23 +46,19 @@ class App extends React.Component<{}, IState> {
   constructor(props: {}) {
     super(props);
 
-    window.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.keyCode === 32) {
-        // load a new word on Space key press
-        this.load();
-      }
-    });
+    window.addEventListener("keydown", onSpacePress(this.load));
 
-    const dictionary: string[][] = localDictionaryOrFallback(
+    const dictionary: string[][] = loadDictionary(
+      localStorage,
       LOCAL_STORAGE_WORDS,
       defaultDictionary
     );
-    save(LOCAL_STORAGE_WORDS, JSON.stringify(dictionary));
+    saveDictionary(dictionary);
 
-    const theme = localThemeOrFallback(LOCAL_STORAGE_THEME, 0);
-    save(LOCAL_STORAGE_THEME, theme);
+    const theme = loadTheme(localStorage, LOCAL_STORAGE_THEME);
+    saveTheme(theme);
 
-    const wordCount = localCountOrFallback(LOCAL_STORAGE_WORD_COUNT, 0);
+    const wordCount = loadWordCount(localStorage, LOCAL_STORAGE_WORD_COUNT);
 
     this.state = {
       theme,
@@ -84,7 +82,7 @@ class App extends React.Component<{}, IState> {
           <div className="word-container">
             <Word word={wordInSwedish} />
             <SmallWord word={wordInEnglish} />
-            <WordsCounter counter={wordCount} />
+            <WordCounter counter={wordCount} />
           </div>
           <ul className="settings">
             <li>
@@ -110,7 +108,7 @@ class App extends React.Component<{}, IState> {
 
   private changeTheme = () => {
     this.setState(incrementTheme, () => {
-      save(LOCAL_STORAGE_THEME, this.state.theme);
+      saveTheme(this.state.theme);
     });
   };
 
@@ -123,18 +121,18 @@ class App extends React.Component<{}, IState> {
       const { wordCount } = this.state;
 
       analitycs(wordCount);
-      save(LOCAL_STORAGE_WORD_COUNT, JSON.stringify(wordCount));
+      saveWordCount(wordCount);
     });
 
     this.setState(updateDictionary(dictionary), () => {
-      if (this.state.words.length === 0) {
+      if (dictionary.length === 0) {
         // we don't have more words to show,
         // fallback to the default dictionary
         this.setState(updateDictionary(defaultDictionary), () => {
-          save(LOCAL_STORAGE_WORDS, JSON.stringify(this.state.words));
+          saveDictionary(this.state.words);
         });
       } else {
-        save(LOCAL_STORAGE_WORDS, JSON.stringify(dictionary));
+        saveDictionary(dictionary);
       }
     });
   };
