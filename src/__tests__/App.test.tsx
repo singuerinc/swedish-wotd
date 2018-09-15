@@ -55,4 +55,54 @@ describe("<App />", () => {
       expect(onSpacePress).toHaveBeenCalledWith(callback);
     });
   });
+
+  describe("info", () => {
+    it("should call info when click on info button", () => {
+      const wrapper = shallow(<App />);
+      const info = wrapper.find(InfoButton);
+
+      window.open = jest.fn();
+
+      info.simulate("click");
+
+      expect(window.open).toBeCalledWith(
+        "https://github.com/singuerinc/swedish-wotd"
+      );
+    });
+  });
+
+  describe("changeTheme", () => {
+    it("should call changeTheme when click on theme button", () => {
+      const wrapper = shallow(<App />);
+      const app = wrapper.instance();
+      app.setState = jest.fn().mockImplementation((state, callback) => {
+        callback && callback();
+      });
+
+      const themeBtn = wrapper.find(ThemeButton);
+      themeBtn.simulate("click");
+
+      expect(app.setState).toBeCalledWith(
+        expect.any(Function),
+        expect.any(Function)
+      );
+    });
+  });
+
+  describe("load", () => {
+    it("should load the default dictionary when there are no more words in local", () => {
+      const wrapper = shallow(<App />);
+      const app: App = wrapper.instance();
+      app.setState = jest.fn().mockImplementation((state, callback) => {
+        callback && callback();
+      });
+
+      wrapper.setState({
+        words: [["hello", "hej"]]
+      });
+      app.load();
+
+      expect(app.setState).toBeCalledTimes(5);
+    });
+  });
 });

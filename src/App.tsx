@@ -125,7 +125,7 @@ class App extends React.Component<{}, IState> {
     });
 
     this.setState(updateDictionary(dictionary), () => {
-      if (this.state.words.length === 0) {
+      if (dictionary.length === 0) {
         // we don't have more words to show,
         // fallback to the default dictionary
         this.setState(updateDictionary(defaultDictionary), () => {
