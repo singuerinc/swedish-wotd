@@ -3,7 +3,7 @@ import {
   incrementWordCount,
   updateDictionary,
   updateWordInEnglish,
-  updateWordInSwedish
+  updateWordInSpanish
 } from "../store";
 
 describe("store", () => {
@@ -43,10 +43,10 @@ describe("store", () => {
     });
   });
 
-  describe("updateWordInSwedish", () => {
-    it("should update the word in Swedish", () => {
-      expect(updateWordInSwedish("hej")()).toStrictEqual({
-        wordInSwedish: "hej"
+  describe("updateWordInSpanish", () => {
+    it("should update the word in Spanish", () => {
+      expect(updateWordInSpanish("hola")()).toStrictEqual({
+        wordInSpanish: "hola"
       });
     });
   });
