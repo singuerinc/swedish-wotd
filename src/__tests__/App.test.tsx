@@ -23,7 +23,7 @@ describe("<App />", () => {
 
       expect(wordContainer).toHaveLength(1);
       expect(word).toHaveLength(1);
-      expect(smallWord).toHaveLength(1);
+      expect(smallWord).toHaveLength(2);
       expect(wordCounter).toHaveLength(1);
     });
 
@@ -66,7 +66,7 @@ describe("<App />", () => {
       info.simulate("click");
 
       expect(window.open).toBeCalledWith(
-        "https://github.com/singuerinc/swedish-wotd"
+        "https://github.com/singuerinc/spanish-wotd"
       );
     });
   });
@@ -102,11 +102,11 @@ describe("<App />", () => {
       });
 
       wrapper.setState({
-        words: [["hello", "hej"]]
+        words: [["hello", "hej", "hola"]]
       });
       app.load();
 
-      expect(app.setState).toBeCalledTimes(5);
+      expect(app.setState).toBeCalledTimes(6);
     });
   });
 });

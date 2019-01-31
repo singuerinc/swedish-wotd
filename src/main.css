@@ -77,6 +77,10 @@ h1,
   height: 4.125rem;
 }
 
+.small-words-container {
+  display: flex;
+}
+
 .small {
   font-size: 2rem;
   font-weight: 300;
@@ -85,6 +89,7 @@ h1,
   width: 100%;
   color: #868e96;
   height: auto;
+  margin: 0 0.3em;
 }
 
 .word-counter,

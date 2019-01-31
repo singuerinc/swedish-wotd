@@ -97,12 +97,14 @@ describe("impure", () => {
         ...lsStub,
         getItem: jest
           .fn()
-          .mockImplementation(() => '[["hello","hej"],["bye bye","hejdå"]]')
+          .mockImplementation(
+            () => '[["hej", "hello", "hola"],["hejdå", "bye bye", "chau"]]'
+          )
       };
 
       expect(loadDictionary(localStorageStub, "foo", [])).toStrictEqual([
-        ["hello", "hej"],
-        ["bye bye", "hejdå"]
+        ["hej", "hello", "hola"],
+        ["hejdå", "bye bye", "chau"]
       ]);
     });
 
@@ -114,10 +116,10 @@ describe("impure", () => {
 
       expect(
         loadDictionary(localStorageStub, "foo", [
-          ["hello", "hej"],
-          ["bye bye", "hejdå"]
+          ["hej", "hello", "hola"],
+          ["hejdå", "bye bye", "chau"]
         ])
-      ).toStrictEqual([["hello", "hej"], ["bye bye", "hejdå"]]);
+      ).toStrictEqual([["hej", "hello", "hola"], ["hejdå", "bye bye", "chau"]]);
     });
 
     it("should return the fallback dictionary if the stored dictionary does not contain anything", () => {
@@ -128,10 +130,10 @@ describe("impure", () => {
 
       expect(
         loadDictionary(localStorageStub, "foo", [
-          ["hello", "hej"],
-          ["bye bye", "hejdå"]
+          ["hej", "hello", "hola"],
+          ["hejdå", "bye bye", "chau"]
         ])
-      ).toStrictEqual([["hello", "hej"], ["bye bye", "hejdå"]]);
+      ).toStrictEqual([["hej", "hello", "hola"], ["hejdå", "bye bye", "chau"]]);
     });
   });
 });

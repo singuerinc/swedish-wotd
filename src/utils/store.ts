@@ -10,6 +10,10 @@ export const updateWordInEnglish = (word: string) => () => ({
   wordInEnglish: word
 });
 
+export const updateWordInSpanish = (word: string) => () => ({
+  wordInSpanish: word
+});
+
 export const updateWordInSwedish = (word: string) => () => ({
   wordInSwedish: word
 });

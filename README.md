@@ -1,12 +1,8 @@
-[![CircleCI](https://circleci.com/gh/singuerinc/swedish-wotd/tree/master.svg?style=svg)](https://circleci.com/gh/singuerinc/swedish-wotd/tree/master) [![codecov](https://codecov.io/gh/singuerinc/swedish-wotd/branch/master/graph/badge.svg)](https://codecov.io/gh/singuerinc/swedish-wotd) [![Known Vulnerabilities](https://snyk.io/test/github/singuerinc/swedish-wotd/badge.svg)](https://snyk.io/test/github/singuerinc/swedish-wotd) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2ecd681786d34f33a36f31d3709904d4)](https://www.codacy.com/app/nahuel.scotti/swedish-wotd)
+[![CircleCI](https://circleci.com/gh/singuerinc/spanish-wotd/tree/master.svg?style=svg)](https://circleci.com/gh/singuerinc/spanish-wotd/tree/master) [![codecov](https://codecov.io/gh/singuerinc/spanish-wotd/branch/master/graph/badge.svg)](https://codecov.io/gh/singuerinc/spanish-wotd) [![Known Vulnerabilities](https://snyk.io/test/github/singuerinc/spanish-wotd/badge.svg)](https://snyk.io/test/github/singuerinc/spanish-wotd) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2ecd681786d34f33a36f31d3709904d4)](https://www.codacy.com/app/nahuel.scotti/spanish-wotd)
 
-# Swedish word of the day
+# Spanish word of the day
 
 Another _"Word of the day website"_... I know.
-
-## Why
-
-Because I live in Sweden and I am learning Swedish. This is a way to learn new words everytime I open my browser.
 
 ## What
 
@@ -17,7 +13,7 @@ A project to test/learn more about some technologies:
 
 ## Features
 
-- Display the word English and it translation in Swedish
+- Display the word Spanish and it translation in Swedish
 
 ## Themes
 

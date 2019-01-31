@@ -19,6 +19,7 @@ import {
   incrementWordCount,
   updateDictionary,
   updateWordInEnglish,
+  updateWordInSpanish,
   updateWordInSwedish
 } from "./utils/store";
 import { words as defaultDictionary } from "./utils/words";
@@ -40,6 +41,7 @@ interface IState {
   wordCount: number;
   wordInEnglish: string | null;
   wordInSwedish: string | null;
+  wordInSpanish: string | null;
 }
 
 class App extends React.Component<{}, IState> {
@@ -65,6 +67,7 @@ class App extends React.Component<{}, IState> {
       wordCount,
       wordInEnglish: null,
       wordInSwedish: null,
+      wordInSpanish: null,
       words: dictionary
     };
   }
@@ -74,14 +77,24 @@ class App extends React.Component<{}, IState> {
   }
 
   public render() {
-    const { wordCount, wordInEnglish, wordInSwedish, theme } = this.state;
+    const {
+      wordCount,
+      wordInEnglish,
+      wordInSwedish,
+      wordInSpanish,
+      theme
+    } = this.state;
 
-    if (wordInEnglish && wordInSwedish) {
+    if (wordInEnglish && wordInSpanish && wordInSwedish) {
       return (
         <div className={`app-container theme-${theme}`}>
           <div className="word-container">
-            <Word word={wordInSwedish} />
-            <SmallWord word={wordInEnglish} />
+            <Word word={wordInSpanish} />
+            <div className="small-words-container">
+              <SmallWord word={wordInEnglish} />
+              <span className="small">/</span>
+              <SmallWord word={wordInSwedish} />
+            </div>
             <WordCounter counter={wordCount} />
           </div>
           <ul className="settings">
@@ -103,7 +116,7 @@ class App extends React.Component<{}, IState> {
   }
 
   private info = () => {
-    window.open("https://github.com/singuerinc/swedish-wotd");
+    window.open("https://github.com/singuerinc/spanish-wotd");
   };
 
   private changeTheme = () => {
@@ -113,9 +126,13 @@ class App extends React.Component<{}, IState> {
   };
 
   private load = () => {
-    const [[wordInSwedish, wordInEnglish], ...dictionary] = this.state.words;
+    const [
+      [wordInSwedish, wordInEnglish, wordInSpanish],
+      ...dictionary
+    ] = this.state.words;
 
     this.setState(updateWordInEnglish(wordInEnglish));
+    this.setState(updateWordInSpanish(wordInSpanish));
     this.setState(updateWordInSwedish(wordInSwedish));
     this.setState(incrementWordCount, () => {
       const { wordCount } = this.state;
