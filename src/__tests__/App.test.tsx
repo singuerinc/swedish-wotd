@@ -66,7 +66,7 @@ describe.skip("<App />", () => {
       info.simulate("click");
 
       expect(window.open).toBeCalledWith(
-        "https://github.com/singuerinc/spanish-wotd"
+        "https://github.com/singuerinc/swedish-wotd"
       );
     });
   });
