@@ -8,5 +8,3 @@ interface IProps {
 export function Word({ className, word }: IProps) {
   return <h1 className={className}>{word}</h1>;
 }
-
-export { Word };
