@@ -2,11 +2,11 @@
 
 # Swedish word of the day
 
-Another _"Word of the day website"_... I know.
+Another _"Word of the day website"_...
 
 ## What
 
-A project to test/learn more about some technologies:
+A project to test/learn more about these technologies:
 
 - React (+Hooks)
 - Typescript
@@ -14,7 +14,7 @@ A project to test/learn more about some technologies:
 
 ## Features
 
-- Display the word Swedish and it translation in English and Spanish
+- Displays a word in Swedish and it translations in English and Spanish
 
 ## Themes
 
