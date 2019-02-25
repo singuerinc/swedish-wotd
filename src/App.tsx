@@ -1,158 +1,91 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { InfoButton } from "./components/buttons/InfoButton";
-import { ThemeButton } from "./components/buttons/ThemeButton";
-
 import { ReloadButton } from "./components/buttons/ReloadButton";
+import { ThemeButton } from "./components/buttons/ThemeButton";
 import { SmallWord } from "./components/SmallWord";
 import { Word } from "./components/Word";
 import { WordCounter } from "./components/WordCounter";
-import {
-  analitycs,
-  loadDictionary,
-  loadTheme,
-  loadWordCount,
-  save
-} from "./utils/impure";
+import { analitycs, loadTheme, loadWordCount, save } from "./utils/impure";
 import { onSpacePress } from "./utils/keys";
-import {
-  incrementTheme,
-  incrementWordCount,
-  updateDictionary,
-  updateWordInEnglish,
-  updateWordInSpanish,
-  updateWordInSwedish
-} from "./utils/store";
 import { words as defaultDictionary } from "./utils/words";
 
-const LOCAL_STORAGE_WORDS = "words";
+function openInfo() {
+  return window.open("https://github.com/singuerinc/spanish-wotd");
+}
+
 const LOCAL_STORAGE_WORD_COUNT = "word_count";
 const LOCAL_STORAGE_THEME = "theme";
 
-const saveDictionary = (dictionary: string[][]) =>
-  save(localStorage, LOCAL_STORAGE_WORDS, JSON.stringify(dictionary));
-const saveWordCount = (wordCount: number) =>
-  save(localStorage, LOCAL_STORAGE_WORD_COUNT, JSON.stringify(wordCount));
-const saveTheme = (theme: number) =>
-  save(localStorage, LOCAL_STORAGE_THEME, theme);
+export function App() {
+  const initialTheme = loadTheme(localStorage, LOCAL_STORAGE_THEME);
+  const initialCount = loadWordCount(localStorage, LOCAL_STORAGE_WORD_COUNT);
 
-interface IState {
-  theme: number;
-  words: string[][];
-  wordCount: number;
-  wordInEnglish: string | null;
-  wordInSwedish: string | null;
-  wordInSpanish: string | null;
-}
+  const [theme, setTheme] = useState(initialTheme);
+  const [wordCount, setWordCount] = useState(initialCount);
 
-class App extends React.Component<{}, IState> {
-  constructor(props: {}) {
-    super(props);
+  const [wordInEnglish, setWordInEnglish] = useState<string>("");
+  const [wordInSwedish, setWordInSwedish] = useState<string>("");
+  const [wordInSpanish, setWordInSpanish] = useState<string>("");
 
-    window.addEventListener("keydown", onSpacePress(this.load));
-
-    const dictionary: string[][] = loadDictionary(
-      localStorage,
-      LOCAL_STORAGE_WORDS,
-      defaultDictionary
-    );
-    saveDictionary(dictionary);
-
-    const theme = loadTheme(localStorage, LOCAL_STORAGE_THEME);
-    saveTheme(theme);
-
-    const wordCount = loadWordCount(localStorage, LOCAL_STORAGE_WORD_COUNT);
-
-    this.state = {
-      theme,
-      wordCount,
-      wordInEnglish: null,
-      wordInSwedish: null,
-      wordInSpanish: null,
-      words: dictionary
-    };
+  function cicleThemes() {
+    setTheme(prevTheme => (prevTheme + 1) % 3);
   }
 
-  public componentDidMount() {
-    this.load();
+  function nextWord() {
+    setWordCount(prevWordCount => prevWordCount + 1);
   }
 
-  public render() {
-    const {
-      wordCount,
-      wordInEnglish,
-      wordInSwedish,
-      wordInSpanish,
-      theme
-    } = this.state;
+  useEffect(() => {
+    // Everytime the count changes a new set of words is taken
+    const index = wordCount % defaultDictionary.length;
+    const row = defaultDictionary[index];
+    const [wordInSwedish, wordInEnglish, wordInSpanish] = row;
 
-    if (wordInEnglish && wordInSpanish && wordInSwedish) {
-      return (
-        <div className={`app-container theme-${theme}`}>
-          <div className="word-container">
-            <Word word={wordInSpanish} />
-            <div className="small-words-container">
-              <SmallWord word={wordInEnglish} />
-              <span className="small">/</span>
-              <SmallWord word={wordInSwedish} />
-            </div>
-            <WordCounter counter={wordCount} />
-          </div>
-          <ul className="settings">
-            <li>
-              <InfoButton onClick={this.info} />
-            </li>
-            <li>
-              <ReloadButton onClick={this.load} />
-            </li>
-            <li>
-              <ThemeButton theme={theme} onClick={this.changeTheme} />
-            </li>
-          </ul>
+    setWordInSwedish(wordInSwedish);
+    setWordInEnglish(wordInEnglish);
+    setWordInSpanish(wordInSpanish);
+
+    analitycs(wordCount);
+
+    // Save the wordCount in localStorage so the next
+    // time the page is loaded it does not start from 0 but from
+    // the latest count
+    save(localStorage, LOCAL_STORAGE_WORD_COUNT, JSON.stringify(wordCount));
+  }, [wordCount]);
+
+  useEffect(() => {
+    save(localStorage, LOCAL_STORAGE_THEME, theme);
+  }, [theme]);
+
+  useEffect(() => {
+    window.addEventListener("keydown", onSpacePress(() => nextWord()));
+    return () =>
+      window.removeEventListener("keydown", onSpacePress(() => nextWord()));
+  }, []);
+
+  return (
+    <div className={`app-container theme-${theme}`}>
+      <div className="word-container">
+        <Word word={wordInSwedish} />
+        <div className="small-words-container">
+          <SmallWord word={wordInEnglish} />
+          <span className="small">/</span>
+          <SmallWord word={wordInSpanish} />
         </div>
-      );
-    } else {
-      return null;
-    }
-  }
-
-  private info = () => {
-    window.open("https://github.com/singuerinc/spanish-wotd");
-  };
-
-  private changeTheme = () => {
-    this.setState(incrementTheme, () => {
-      saveTheme(this.state.theme);
-    });
-  };
-
-  private load = () => {
-    const [
-      [wordInSwedish, wordInEnglish, wordInSpanish],
-      ...dictionary
-    ] = this.state.words;
-
-    this.setState(updateWordInEnglish(wordInEnglish));
-    this.setState(updateWordInSpanish(wordInSpanish));
-    this.setState(updateWordInSwedish(wordInSwedish));
-    this.setState(incrementWordCount, () => {
-      const { wordCount } = this.state;
-
-      analitycs(wordCount);
-      saveWordCount(wordCount);
-    });
-
-    this.setState(updateDictionary(dictionary), () => {
-      if (dictionary.length === 0) {
-        // we don't have more words to show,
-        // fallback to the default dictionary
-        this.setState(updateDictionary(defaultDictionary), () => {
-          saveDictionary(this.state.words);
-        });
-      } else {
-        saveDictionary(dictionary);
-      }
-    });
-  };
+        <WordCounter counter={wordCount} />
+      </div>
+      <ul className="settings">
+        <li>
+          <InfoButton onClick={() => openInfo()} />
+        </li>
+        <li>
+          <ReloadButton onClick={() => nextWord()} />
+        </li>
+        <li>
+          <ThemeButton theme={theme} onClick={() => cicleThemes()} />
+        </li>
+      </ul>
+    </div>
+  );
 }
-
-export { App };

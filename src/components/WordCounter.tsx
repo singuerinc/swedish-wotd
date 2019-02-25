@@ -4,8 +4,6 @@ interface IProps {
   counter: number;
 }
 
-const WordCounter = ({ counter }: IProps) => (
-  <h3 className="word-counter">{counter}</h3>
-);
-
-export { WordCounter };
+export function WordCounter({ counter }: IProps) {
+  return <h3 className="word-counter">{counter}</h3>;
+}

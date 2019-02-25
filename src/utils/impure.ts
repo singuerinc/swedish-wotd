@@ -24,26 +24,6 @@ export function save(ls: Storage, where: string, what: any): boolean {
   }
 }
 
-export function loadDictionary(
-  ls: Storage,
-  local: string,
-  fallback: string[][]
-) {
-  try {
-    // get dictionary from localStorage
-    const dictionary: string[][] = JSON.parse(get(ls, local) as string);
-
-    // if we don't have any more words fallback to the app dictionary
-    if (dictionary.length <= 0) {
-      throw new Error();
-    } else {
-      return dictionary;
-    }
-  } catch (e) {
-    return fallback;
-  }
-}
-
 export function loadTheme(ls: Storage, local: string): number {
   try {
     const localTheme = get(ls, local);
@@ -63,8 +43,7 @@ export function loadWordCount(ls: Storage, local: string) {
     if (lsValue === null) {
       throw new Error();
     }
-    const value = parseInt(lsValue as string, 10);
-    return value;
+    return parseInt(lsValue as string, 10);
   } catch (e) {
     // default
     return 0;
