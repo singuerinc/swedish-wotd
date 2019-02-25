@@ -4,9 +4,7 @@ interface IProps {
   onClick: () => void;
 }
 
-const withBaseButton = function withTranslator(
-  Component: React.StatelessComponent
-) {
+const withBaseButton = function(Component: React.StatelessComponent) {
   return ({ onClick }: IProps) => (
     <div onClick={onClick}>
       <Component />

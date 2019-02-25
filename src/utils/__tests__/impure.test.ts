@@ -1,4 +1,4 @@
-import { get, loadDictionary, loadTheme, loadWordCount, save } from "../impure";
+import { get, loadTheme, loadWordCount, save } from "../impure";
 
 const lsStub: Storage = {
   clear: jest.fn(),
@@ -88,52 +88,6 @@ describe("impure", () => {
       };
 
       expect(loadWordCount(localStorageStub, "foo")).toBe(0);
-    });
-  });
-
-  describe("loadDictionary", () => {
-    it("should return the dictionary stored", () => {
-      const localStorageStub = {
-        ...lsStub,
-        getItem: jest
-          .fn()
-          .mockImplementation(
-            () => '[["hej", "hello", "hola"],["hejdå", "bye bye", "chau"]]'
-          )
-      };
-
-      expect(loadDictionary(localStorageStub, "foo", [])).toStrictEqual([
-        ["hej", "hello", "hola"],
-        ["hejdå", "bye bye", "chau"]
-      ]);
-    });
-
-    it("should return the fallback dictionary if is not stored", () => {
-      const localStorageStub = {
-        ...lsStub,
-        getItem: jest.fn().mockImplementation(() => null)
-      };
-
-      expect(
-        loadDictionary(localStorageStub, "foo", [
-          ["hej", "hello", "hola"],
-          ["hejdå", "bye bye", "chau"]
-        ])
-      ).toStrictEqual([["hej", "hello", "hola"], ["hejdå", "bye bye", "chau"]]);
-    });
-
-    it("should return the fallback dictionary if the stored dictionary does not contain anything", () => {
-      const localStorageStub = {
-        ...lsStub,
-        getItem: jest.fn().mockImplementation(() => "[]")
-      };
-
-      expect(
-        loadDictionary(localStorageStub, "foo", [
-          ["hej", "hello", "hola"],
-          ["hejdå", "bye bye", "chau"]
-        ])
-      ).toStrictEqual([["hej", "hello", "hola"], ["hejdå", "bye bye", "chau"]]);
     });
   });
 });

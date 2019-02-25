@@ -8,18 +8,12 @@ interface IProps {
   onClick: () => void;
 }
 
-class ThemeButton extends React.Component<IProps> {
-  public render() {
-    const { theme, onClick } = this.props;
-
-    return (
-      <div onClick={onClick}>
-        {theme === 0 && <Night />}
-        {theme === 1 && <Cloudy />}
-        {theme === 2 && <Sunny />}
-      </div>
-    );
-  }
+export function ThemeButton({ theme, onClick }: IProps) {
+  return (
+    <div onClick={onClick}>
+      {theme === 0 && <Night />}
+      {theme === 1 && <Cloudy />}
+      {theme === 2 && <Sunny />}
+    </div>
+  );
 }
-
-export { ThemeButton };

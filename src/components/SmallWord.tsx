@@ -1,8 +1,10 @@
 import * as React from "react";
 import { Word } from "./Word";
 
-const SmallWord = ({ word }: { word: string }) => (
-  <Word className="small" word={word} />
-);
+interface IProps {
+  word: string;
+}
 
-export { SmallWord };
+export function SmallWord({ word }: IProps) {
+  return <Word className="small" word={word} />;
+}
