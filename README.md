@@ -8,12 +8,13 @@ Another _"Word of the day website"_... I know.
 
 A project to test/learn more about some technologies:
 
-- React
+- React (+Hooks)
 - Typescript
+- FP
 
 ## Features
 
-- Display the word Swedish and it translation in Swedish
+- Display the word Swedish and it translation in English and Spanish
 
 ## Themes
 
