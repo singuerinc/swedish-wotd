@@ -5,6 +5,7 @@ describe("onSpacePress", () => {
     it("should call the callback when the space bar is pressed", () => {
       const callback = jest.fn();
       const event = new KeyboardEvent("keydown", {
+        // @ts-ignore
         keyCode: 32
       });
 
@@ -16,6 +17,7 @@ describe("onSpacePress", () => {
     it("should not call the callback when any key pressed", () => {
       const callback = jest.fn();
       const event = new KeyboardEvent("keydown", {
+        // @ts-ignore
         keyCode: 33
       });
 
