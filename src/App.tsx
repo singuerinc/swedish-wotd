@@ -11,7 +11,7 @@ import { onSpacePress } from "./utils/keys";
 import { words as defaultDictionary } from "./utils/words";
 
 function openInfo() {
-  return window.open("https://github.com/singuerinc/spanish-wotd");
+  return window.open("https://github.com/singuerinc/swedish-wotd");
 }
 
 const LOCAL_STORAGE_WORD_COUNT = "word_count";
