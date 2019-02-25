@@ -10,7 +10,7 @@ import { WordCounter } from "../components/WordCounter";
 import { onSpacePress } from "../utils/keys";
 jest.mock("../utils/keys");
 
-describe("<App />", () => {
+describe.skip("<App />", () => {
   describe("children", () => {
     it("should contain the word container", () => {
       const wrapper = shallow(<App />);
