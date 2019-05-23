@@ -20,7 +20,7 @@
     "enzyme-adapter-react-16": "^1.9.1",
     "jest": "^24.1.0",
     "parcel-bundler": "^1.11.0",
-    "ts-jest": "^24.0.0",
+    "ts-jest": "^24.0.2",
     "tslint": "^5.11.0",
     "typescript": "^3.3.3333"
   },
