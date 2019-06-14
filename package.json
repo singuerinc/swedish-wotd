@@ -11,21 +11,21 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "@types/enzyme": "^3.1.14",
+    "@types/enzyme": "^3.9.3",
     "@types/enzyme-adapter-react-16": "^1.0.5",
-    "@types/jest": "^24.0.13",
-    "@types/react": "^16.8.4",
-    "@types/react-dom": "^16.8.2",
-    "enzyme": "^3.6.0",
-    "enzyme-adapter-react-16": "^1.9.1",
-    "jest": "^24.1.0",
-    "parcel-bundler": "^1.11.0",
+    "@types/jest": "^24.0.14",
+    "@types/react": "^16.8.20",
+    "@types/react-dom": "^16.8.4",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "jest": "^24.8.0",
+    "parcel-bundler": "^1.12.3",
     "ts-jest": "^24.0.2",
-    "tslint": "^5.11.0",
-    "typescript": "^3.3.3333"
+    "tslint": "^5.17.0",
+    "typescript": "^3.5.2"
   },
   "dependencies": {
-    "react": "^16.8.3",
+    "react": "^16.8.6",
     "react-dom": "^16.8.6"
   }
 }
